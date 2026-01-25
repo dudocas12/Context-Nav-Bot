@@ -1,100 +1,61 @@
 import math
 from controller import Robot
 
-class DeliveryRobot:
+class Driver:
     def __init__(self):
-        # 1. Initialize Robot
         self.robot = Robot()
         self.timestep = int(self.robot.getBasicTimeStep())
         
-        # 2. Motor Setup
-        # TIAGo Base standard names
+        # Motors
         self.left_motor = self.robot.getDevice('wheel_left_joint')
         self.right_motor = self.robot.getDevice('wheel_right_joint')
+        self.left_motor.setPosition(float('inf'))
+        self.right_motor.setPosition(float('inf'))
+        self.left_motor.setVelocity(0.0)
+        self.right_motor.setVelocity(0.0)
         
-        # Configure motors for infinite rotation
-        if self.left_motor and self.right_motor:
-            self.left_motor.setPosition(float('inf'))
-            self.right_motor.setPosition(float('inf'))
-            self.left_motor.setVelocity(0.0)
-            self.right_motor.setVelocity(0.0)
-        else:
-            print("❌ ERROR: Motors not found. Check names in Scene Tree.")
-        
-        # 3. Sensor Setup
-        # LIDAR
-        self.lidar = self.robot.getDevice('Hokuyo URG-04LX-UG01')
-        if self.lidar:
-            self.lidar.enable(self.timestep)
-            self.lidar.enablePointCloud()
-            print("✅ Lidar connected.")
-        else:
-            print("⚠️ Lidar not found (Check name: 'Hokuyo URG-04LX-UG01')")
-
-        # CAMERA
-        self.camera = self.robot.getDevice('camera')
-        if self.camera:
-            self.camera.enable(self.timestep)
-            print("✅ Camera connected.")
-        
-        # GPS
+        # Sensors
         self.gps = self.robot.getDevice('gps')
-        if self.gps:
-            self.gps.enable(self.timestep)
-            print("✅ GPS connected.")
-            
-        # COMPASS
+        self.gps.enable(self.timestep)
+        
         self.compass = self.robot.getDevice('compass')
-        if self.compass:
-            self.compass.enable(self.timestep)
-            print("✅ Compass connected.")
+        self.compass.enable(self.timestep)
+        
+    def get_pose(self):
+        """
+        Returns (x, y, heading_degrees).
+        Using your diagnostic data: 
+        - GPS X/Y are aligned with World X/Y.
+        - Compass X is Sin component, Compass Y is Cos component.
+        """
+        # 1. GPS (Already Correct)
+        g_vals = self.gps.getValues()
+        wx = g_vals[0]
+        wy = g_vals[1]
+        
+        # 2. COMPASS (Fixed for your sensor rotation)
+        c_vals = self.compass.getValues()
+        # atan2(Sin, Cos) -> atan2(CompassX, CompassY)
+        rad = math.atan2(c_vals[0], c_vals[1])
+        deg = math.degrees(rad)
+        
+        return wx, wy, deg
 
     def set_speed(self, linear, angular):
         """
-        linear: m/s (forward speed)
-        angular: rad/s (turning speed)
+        linear: forward speed
+        angular: turning speed (positive = left)
         """
-        if not self.left_motor or not self.right_motor:
-            return
-
-        wheel_radius = 0.0985 
-        axle_length = 0.404
+        linear = max(min(linear, 10), -10)
+        angular = max(min(angular, 5), -5)
         
-        v_left = (linear - angular * axle_length / 2.0) / wheel_radius
-        v_right = (linear + angular * axle_length / 2.0) / wheel_radius
+        # If the robot spins the wrong way, swap the signs of 'angular' below:
+        self.left_motor.setVelocity(linear - angular)
+        self.right_motor.setVelocity(linear + angular)
+
+    def stop(self):
+        self.left_motor.setVelocity(0)
+        self.right_motor.setVelocity(0)
         
-        # Clamp speed to avoid crazy acceleration
-        v_left = max(min(v_left, 10), -10)
-        v_right = max(min(v_right, 10), -10)
-        
-        self.left_motor.setVelocity(v_left)
-        self.right_motor.setVelocity(v_right)
-
-    def get_lidar_data(self):
-        if self.lidar:
-            return self.lidar.getRangeImage()
-        return []
-
-    def get_pose(self):
-        """
-        Returns (x, y, theta_degrees)
-        """
-        if not self.gps or not self.compass:
-            return (0, 0, 0)
-
-        # Get Position
-        gps_vals = self.gps.getValues()
-        x = gps_vals[0]
-        y = gps_vals[1]
-
-        # Get Orientation
-        compass_vals = self.compass.getValues()
-        rad = math.atan2(compass_vals[0], compass_vals[1])
-        bearing = (rad - 1.5708) / math.pi * 180.0
-        if bearing < 0.0:
-            bearing = bearing + 360.0
-            
-        return (x, y, bearing)
-
     def step(self):
         return self.robot.step(self.timestep)

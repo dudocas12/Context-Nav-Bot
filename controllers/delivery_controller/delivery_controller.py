@@ -1,101 +1,98 @@
 import math
-from navigation import DeliveryRobot
+from navigation import Driver
 
-bot = DeliveryRobot()
+# ==============================================================================
+# 🎯 MISSION: Triangle Path
+# ==============================================================================
+# I reduced these slightly just in case (2,2) is still off-limits. 
+# Feel free to change them back if your map is big enough!
+TARGETS = [
+    (1.5, 1.5),    # Target 1 (Top Right)
+    (-1.0, -1.0),  # Target 2 (Bottom Left)
+    (1.5, -0.5)    # Target 3 (Bottom Right)
+]
+CRUISE_SPEED = 4.0
 
-# SETTINGS
-STOP_DIST = 0.6
-CLEAR_DIST = 1.0
-CRITICAL_DIST = 0.4
+bot = Driver()
+print("🚀 CONTROLLER STARTED")
 
-# STATE MEMORY
-is_stuck = False
-stuck_direction = 0
-prev_dist = 10.0
+# Warmup sensors
+for _ in range(20): bot.step()
 
-# STUCK DETECTION (GPS-Based)
-stuck_timer = 0
-last_position = (0, 0)
-
-print("🤖 Robot Logic: Lidar + GPS Stuck Detection")
+target_index = 0
+state = "CALCULATE"
+target_heading = 0.0
 
 while bot.step() != -1:
-    lidar_data = bot.get_lidar_data()
-    x, y, theta = bot.get_pose()
+    # 1. READ SENSORS
+    curr_x, curr_y, curr_heading = bot.get_pose()
     
-    if not lidar_data: continue
-
-    # 1. PROCESS SENSORS
-    total_rays = len(lidar_data)
-    mid_point = total_rays // 2
+    # 2. CHECK IF MISSION COMPLETE
+    if target_index >= len(TARGETS):
+        print("✅ ALL TARGETS REACHED! MISSION COMPLETE.")
+        bot.stop()
+        continue
+        
+    # 3. GET CURRENT TARGET
+    t_x, t_y = TARGETS[target_index]
+    dx = t_x - curr_x
+    dy = t_y - curr_y
+    dist = math.sqrt(dx*dx + dy*dy)
     
-    right_part = lidar_data[mid_point - 120 : mid_point - 20]
-    center_part = lidar_data[mid_point - 20 : mid_point + 20]
-    left_part = lidar_data[mid_point + 20 : mid_point + 120]
-
-    def get_dist(rays):
-        valid = [d for d in rays if d != float('inf')]
-        return min(valid) if valid else 10.0
-
-    dist_right = get_dist(right_part)
-    dist_front = get_dist(center_part)
-    dist_left = get_dist(left_part)
-
-    # Blind Spot Fix
-    if dist_front == 10.0 and prev_dist < 0.5:
-        dist_front = 0.05 
-    prev_dist = dist_front
-
-    # 2. GPS STUCK CHECK (The "Invisible Wall" Fix)
-    # Calculate how far we moved since last check
-    dx = x - last_position[0]
-    dy = y - last_position[1]
-    dist_moved = math.sqrt(dx*dx + dy*dy)
+    # ==================================================
+    # 🧠 STATE MACHINE
+    # ==================================================
     
-    # If we are trying to drive (not stuck mode), but not moving...
-    if not is_stuck and dist_moved < 0.002: # 2mm movement threshold
-        stuck_timer += 1
-    else:
-        stuck_timer = 0
-        last_position = (x, y)
+    if state == "CALCULATE":
+        # Check if we spawned ON the target (Safety check)
+        if dist < 0.20:
+            print(f"🎉 Already at ({t_x}, {t_y})")
+            target_index += 1
+            continue
+        
+        # Calculate Angle
+        target_rad = math.atan2(dy, dx)
+        target_heading = math.degrees(target_rad)
+        print(f"📍 New Target: ({t_x}, {t_y}) | Dist: {dist:.2f}m | Heading: {target_heading:.1f}°")
+        state = "TURN"
 
-    # If we haven't moved for 20 frames (~0.6 seconds), we are hitting something!
-    if stuck_timer > 20:
-        print("🛑 GPS says we are stuck! (Invisible Obstacle). Forcing Reverse.")
-        is_stuck = True
-        stuck_direction = 1 # Force a turn
-        stuck_timer = 0
+    elif state == "TURN":
+        error = target_heading - curr_heading
+        while error > 180: error -= 360
+        while error < -180: error += 360
+        
+        # If aligned, switch to driving
+        if abs(error) < 2.0:
+            bot.stop() # Brief stop to settle
+            state = "DRIVE"
+            continue
+            
+        # P-Controller for Turn
+        turn_speed = error * 0.05
+        bot.set_speed(0, turn_speed)
 
-    # 3. LOGIC
-    if not is_stuck and dist_front < STOP_DIST:
-        is_stuck = True
-        if dist_left > dist_right:
-            stuck_direction = 1  
-            print(f"🛑 Blocked! Locking turn LEFT.")
+    elif state == "DRIVE":
+        # --- 1. SUCCESS CHECK ---
+        if dist < 0.20:
+            print(f"🎉 Reached Target {target_index+1} at ({t_x}, {t_y})")
+            bot.stop()
+            target_index += 1  # Increment target
+            state = "CALCULATE"
+            continue
+            
+        # --- 2. HEADING CORRECTION ---
+        error = target_heading - curr_heading
+        while error > 180: error -= 360
+        while error < -180: error += 360
+        correction = error * 0.1
+        
+        # --- 3. SMART BRAKING ---
+        if dist > 1.0:
+            speed = CRUISE_SPEED
         else:
-            stuck_direction = -1 
-            print(f"🛑 Blocked! Locking turn RIGHT.")
-
-    if is_stuck and dist_front > CLEAR_DIST:
-        is_stuck = False
-        stuck_direction = 0
-        print("✅ Path Found. Resuming Drive.")
-
-    # 4. EXECUTE
-    if is_stuck:
-        if dist_front < CRITICAL_DIST:
-             print(f"⚠️ Too Close ({dist_front:.2f}m). Reversing...")
-             bot.set_speed(-0.3, 0.0)
-        else:
-            if stuck_direction == 1:
-                bot.set_speed(0.0, 1.5) 
-            else:
-                bot.set_speed(0.0, -1.5) 
-    else:
-        speed = 1.0 if dist_front > 1.5 else 0.5
-        turn = 0.0
-        if dist_left < 0.8: turn = -0.4
-        if dist_right < 0.8: turn = 0.4
-        bot.set_speed(speed, turn)
-
-    print(f"Front: {dist_front:.2f}m | GPS Move: {dist_moved:.4f}")
+            speed = max(1.0, dist * 3.0) # Slow down smoothly
+            
+        bot.set_speed(speed, correction)
+        
+        # Debug print (Fixed the comma typo)
+        print(f"🚗 Dist: {dist:.3f}")
