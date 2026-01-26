@@ -1,0 +1,353 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/BrushedAluminium.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/solids/protos/SolidBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/Roundabout.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/RoadIntersection.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/StraightRoadSegment.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/trees/protos/Oak.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/trees/protos/Pine.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/CommercialBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/ResidentialBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/pal_robotics/tiago_base/protos/TiagoBase.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/hokuyo/protos/HokuyoUrg04lxug01.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0944
+  position 0.0008396758252064099 0.0008396781996250868 554.6329957756168
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 200 200
+  floorAppearance PBRAppearance {
+    baseColor 0.6 0.6 0.6
+    roughness 0.8
+  }
+  wallThickness 0.05
+  wallAppearance BrushedAluminium {
+    colorOverride 0 0.666667 0
+  }
+}
+StraightRoadSegment {
+  translation -11 50 0.2
+  name "road_top_3"
+  length 27
+}
+StraightRoadSegment {
+  translation -100 50 0.2
+  name "road_top_1"
+  length 16
+}
+StraightRoadSegment {
+  translation -80 50 0.2
+  name "road_top_2"
+  length 64
+}
+StraightRoadSegment {
+  translation 88 50 0.2
+  name "road_top_5"
+  length 12
+}
+TiagoBase {
+  hidden position_0_0 4152.02949508228
+  hidden position_0_1 4694.81877965052
+  hidden position_0_2 -68.25605393980503
+  hidden position_0_3 -79.75927599600946
+  hidden position_0_4 17.797976769180902
+  hidden position_0_5 16.775150835532155
+  hidden translation_11 -1.4705296663919398e-05 2.4691126725429058e-06 0.029843887229974886
+  hidden rotation_11 0.005439612627361365 0.005734426877938241 0.9999687629935476 2.3435379231687234e-08
+  hidden translation_15 -5.485306445813371e-05 -0.20200072327471774 -0.00014584302000153696
+  hidden rotation_15 -0.7350137820517055 0.4794568791804036 -0.4794536903608478 4.409271777343317
+  hidden translation_16 -0.00014880962284349351 0.20199935641247968 5.7913543235836115e-05
+  hidden rotation_16 0.688887294016484 0.5125602320058532 -0.5125585866110841 1.935143218731583
+  hidden translation_17 0.1694980110944838 -0.10199887407452064 -0.03284741449285572
+  hidden rotation_17 -1.9538966703411066e-06 4.675988817228209e-06 0.9999999999871587 0.8589832559518612
+  hidden position_17_0 15698.123882654658
+  hidden rotation_18 -0.14710470442139523 0.6994128295289539 0.6994153986204453 2.849479377235019
+  hidden translation_19 0.1694980839985911 0.10199882152467823 -0.0328482905508268
+  hidden rotation_19 2.0610295564909504e-06 -1.5436089672235783e-06 -0.9999999999966849 4.36105349328613
+  hidden position_19_0 16014.362854007202
+  hidden rotation_20 0.6136288676358119 0.5583266618696267 0.558328712721736 4.242350383055608
+  hidden translation_21 -0.17350148422844652 -0.10200046288348551 -0.032929205506794554
+  hidden rotation_21 1.7622158013466352e-06 3.2337773585440333e-06 -0.9999999999932186 1.051577875469537
+  hidden position_21_0 15783.589567029097
+  hidden rotation_22 -0.9871344799939125 0.11306065739185085 0.11306107268759863 1.583748635403016
+  hidden translation_23 -0.17350116329195936 0.10200102352350564 -0.032930081561378735
+  hidden rotation_23 1.8196786202062276e-06 1.1416951024321414e-06 -0.9999999999976926 2.0744038090677304
+  hidden position_23_0 16097.049384803118
+  hidden rotation_24 -0.9468818602343164 -0.2273921314553779 -0.22739296671484963 1.6253538597164874
+  translation 86.72085299189824 -19.488574291530895 0.09358319721875363
+  rotation -0.000411742225959519 -0.00036497115700600603 0.9999998486321854 -2.3873554544357023
+  controller "delivery_controller"
+  bodySlot [
+    TouchSensor {
+      translation 0.24 2.20392e-07 -0.06
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+          }
+          geometry Cylinder {
+            height 0.5
+            radius 0.03
+          }
+        }
+      ]
+      name "bumper"
+      boundingObject Shape {
+        geometry Cylinder {
+          height 0.5
+          radius 0.03
+        }
+      }
+    }
+    Compass {
+    }
+    GPS {
+    }
+    Solid {
+      translation 0 0 0.3
+      children [
+        Camera {
+          translation -0.25 0 0
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0.639216 0.0588235
+          }
+          geometry Box {
+            size 0.3 0.4 0.3
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.1 0.1 0.1
+      }
+      physics Physics {
+        mass 0.1
+      }
+    }
+  ]
+  lidarSlot [
+    HokuyoUrg04lxug01 {
+    }
+  ]
+}
+Roundabout {
+  translation 50 50 0.2
+  name "roundabout_TR"
+}
+Roundabout {
+  translation -50 -50 0.2
+  name "roundabout_BL"
+}
+RoadIntersection {
+  translation 50 -50 0.2
+  name "intersection_BR"
+}
+RoadIntersection {
+  translation -50 50 0.2
+  name "intersection_TL"
+}
+StraightRoadSegment {
+  translation 20 50 0.2
+  name "road_top_4"
+  length 63
+}
+StraightRoadSegment {
+  translation 50 27 0.2
+  rotation 0 0 1 1.5707996938995747
+  name "road_right_1"
+  length 73
+}
+StraightRoadSegment {
+  translation 50 -100 0.2
+  rotation 0 0 1 1.5707996938995747
+  name "road_right_4"
+  length 25
+}
+StraightRoadSegment {
+  translation 50 -33.82 0.2
+  rotation 0 0 1 1.5708
+  name "road_right_2"
+  length 55
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 50 -70 0.2
+  rotation 0 0 1 1.5708
+  name "road_right_3"
+  length 31
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 20 -50 0.2
+  name "road_bottom"
+  length 80
+}
+StraightRoadSegment {
+  translation -3 -50 0.2
+  name "road_bottom_4"
+  length 19
+}
+StraightRoadSegment {
+  translation -100 -50 0.2
+  name "road_bottom_1"
+  length 13
+}
+StraightRoadSegment {
+  translation -82 -50 0.2
+  name "road_bottom_2"
+  length 74
+}
+StraightRoadSegment {
+  translation -50 30 0.2
+  rotation 0 0 1 1.5708
+  name "road_left"
+  length 70
+}
+StraightRoadSegment {
+  translation -50 -15 0.2
+  rotation 0 0 1 1.5707996938995747
+  name "road_left_2"
+  length 38
+}
+StraightRoadSegment {
+  translation -50 -70 0.2
+  rotation 0 0 1 1.5707996938995747
+  name "road_left_3"
+  length 49
+}
+StraightRoadSegment {
+  translation -50 -100 0.2
+  rotation 0 0 1 1.5707996938995747
+  name "road_left_4"
+  length 25
+}
+Pose {
+  translation 0 65 3
+  children [
+    Pose {
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
+Pose {
+  translation 65 0 3
+  rotation 0 0 1 -1.5708
+  children [
+    Pose {
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
+Pose {
+  translation 0 -65 3
+  rotation 0 0 1 3.14159
+  children [
+    Pose {
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            roughness 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
+Pose {
+  translation -65 0 3
+  rotation 0 0 1 1.5708
+  children [
+    Pose {
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.6 0.3 0
+            roughness 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
+SolidBox {
+  translation 0.29 0 0
+  name "Relva_Central"
+  size 80 80 0.005
+  appearance PBRAppearance {
+    baseColor 0.2 0.8 0.2
+    baseColorMap ImageTexture {
+      url [
+        "textures/grass_texture.jpg"
+      ]
+    }
+    roughness 0.5
+    metalness 0
+  }
+}
+Oak {
+  translation 10 10 0.2
+  name "tree_1"
+}
+Pine {
+  translation -10 10 0.2
+  name "tree_2"
+}
+Oak {
+  translation 10 -10 0.2
+  name "tree_3"
+}
+Pine {
+  translation -10 -10 0.2
+  name "tree_4"
+}
+CommercialBuilding {
+  translation 0 70 0.2
+  name "building_top"
+}
+ResidentialBuilding {
+  translation 70 0 0.2
+  rotation 0 0 1 -3.1415853071795863
+  name "building_right"
+}
+CommercialBuilding {
+  translation 0 -70 0.2
+  rotation 0 0 1 3.14159
+  name "building_bottom"
+}
+ResidentialBuilding {
+  translation -62.33 5.94997 0.2
+  rotation 0 0 -1 3.67802e-06
+  name "building_left"
+}
