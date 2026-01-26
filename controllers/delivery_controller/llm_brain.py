@@ -12,7 +12,7 @@ except ImportError:
 # We still keep this to build the prompt context
 ZONES = {
     "residential": {
-        "coords": (78.0, -17.7), 
+        "coords": (85.2, -5.14), 
         "desc": "Home base, my house, sleeping, delivery drop-off, safety."
     },
     "park": {

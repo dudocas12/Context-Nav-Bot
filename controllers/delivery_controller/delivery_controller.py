@@ -48,7 +48,7 @@ if user_request:
 else:
     print("❌ No input. Going Home.")
     zone_name = "residential"
-    destination = (0.0, 0.0)
+    destination = (85.2, -5.14)
 
 TARGETS = [destination]
 

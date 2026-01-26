@@ -7,6 +7,5 @@ maximizedDockId: -1
 centralWidgetVisible: 1
 orthographicViewHeight: 1
 textFiles: 1 "controllers/delivery_controller/navigation.py" "controllers/delivery_controller/delivery_controller.py" "controllers/delivery_controller/llm_brain.py"
-globalOptionalRendering: LidarRaysPaths
 consoles: Console:All:All
 renderingDevicePerspectives: TIAGo Base:camera;1;1;0;0
