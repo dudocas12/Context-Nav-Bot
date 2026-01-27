@@ -1,0 +1,1339 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/BrushedAluminium.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/solids/protos/SolidBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/Roundabout.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/RoadIntersection.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/StraightRoadSegment.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/trees/protos/Oak.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/trees/protos/Pine.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/CommercialBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/ResidentialBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/pal_robotics/tiago_base/protos/TiagoBase.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/hokuyo/protos/HokuyoUrg04lxug01.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/street_furniture/protos/FireHydrant.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/street_furniture/protos/TrashBin.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/street_furniture/protos/Fountain.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/street_furniture/protos/Bench.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/Pole.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/TrafficLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/TrafficLightStandardLampGeometry.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.09476576174909859 -0.027139365794456267 -0.9951295921760078 3.852289581482207
+  position 93.1399285460512 -4.905288421528875 4.3386860448415865
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 200 200
+  floorAppearance PBRAppearance {
+    baseColor 0.6 0.6 0.6
+    roughness 0.8
+  }
+  wallThickness 0.05
+  wallAppearance BrushedAluminium {
+    colorOverride 0 0.666667 0
+  }
+}
+Robot {
+  translation 65.42 -45.43 -0.07
+  rotation 0 0 1 -1.5707953071795862
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(31)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 54.44 21.36 -0.01
+  rotation 0 0 1 3.14159
+  children [
+    Pole {
+      translation 0 0 -0.04
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(29)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 45.65 28.61 -0.04
+  rotation 0 0 1 -5.307179586466759e-06
+  children [
+    Pole {
+      translation 0 0 -0.04
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(28)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 93.21 54.49 -0.01
+  rotation 0 0 1 -1.5708053071795867
+  children [
+    Pole {
+      translation 0 0 -0.04
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(26)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 87.06 45.59 -0.02
+  rotation 0 0 1 1.57079
+  children [
+    Pole {
+      translation 0 0 -0.04
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(27)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 45.55 69.23 0
+  rotation 0 0 1 -5.307179586466759e-06
+  children [
+    Pole {
+      translation 0 0 -0.04
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(24)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 54.53 62.84 -0.09
+  rotation 0 0 1 3.14159
+  children [
+    Pole {
+      translation 0 0 -0.04
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(25)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 29.22 45.53 -0.1
+  rotation 0 0 1 1.57079
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(22)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 37.12 54.61 -0.11
+  rotation 0 0 1 -1.5708053071795867
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(23)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -41.96 45.53 -0.08
+  rotation 0 0 1 1.57079
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(20)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -32.87 54.42 -0.01
+  rotation 0 0 1 -1.5708053071795867
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(21)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -45.52 58.34 -0.04
+  rotation 0 0 1 3.14158
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(19)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -54.46 65.82 -0.08
+  rotation 0 0 -1 8.98519e-06
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(18)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -45.53 -37.08 -0.03
+  rotation 0 0 1 3.14158
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(13)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -69.19 -54.56 -0.11
+  rotation 0 0 1 1.57079
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(11)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -2.68 -45.55 -0.09
+  rotation 0 0 -1 1.57081
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(7)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -10.21 -54.54 -0.11
+  rotation 0 0 1 1.57079
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(6)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -45.35 -84.25 -0.08
+  rotation 0 0 1 3.14159
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(8)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -54.58 -75.36 -0.07
+  rotation 0 0 1 -5.307179586466759e-06
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(9)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -62.78 -45.48 -0.13
+  rotation 0 0 1 -1.5708053071795867
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(10)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -54.66 -26.97 -0.03
+  rotation 0 0 -1 8.98519e-06
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(12)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -54.56 41.64 -0.04
+  rotation 0 0 -1 8.98519e-06
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(14)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -66.28 45.43 -0.14
+  rotation 0 0 1 1.57079
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(16)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -58.37 54.37 -0.08
+  rotation 0 0 1 -1.5708053071795867
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(17)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation -45.43 32.39 -0.05
+  rotation 0 0 1 3.14158
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(15)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 45.32 -69.71 -0.17
+  rotation 0 0 1 -5.307179586466759e-06
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(5)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+ResidentialBuilding {
+  translation 70 0 -0.29
+  rotation 0 0 -1 3.1415853071795863
+  name "building_right(1)"
+}
+TiagoBase {
+  hidden position_0_0 3677.2125266020807
+  hidden position_0_1 3441.0959098356448
+  hidden position_0_2 -2.5325118422673967
+  hidden position_0_3 -15.297562671003574
+  hidden position_0_4 15.370440359498046
+  hidden position_0_5 21.831743913235087
+  hidden linearVelocity_0 -0.11705208708515745 0.03371409893977373 4.6111407286864146e-05
+  hidden angularVelocity_0 -0.0008193934644868078 0.0015322228001288644 -1.0185687904035199
+  hidden translation_12 -3.2684467612398294e-06 -1.7268588692331832e-07 0.029963520530765175
+  hidden rotation_12 0.0056745004207616676 -0.0024899213066100372 0.9999807999841105 1.422429238891708e-08
+  hidden linearVelocity_12 -0.11732140890321452 0.03281042747725688 4.495670693438315e-05
+  hidden angularVelocity_12 -0.0008193932140661762 0.0015322221277153767 -1.018568756143349
+  hidden translation_16 9.171254812468105e-06 -0.20200072327471774 0.00015554720585334115
+  hidden rotation_16 0.5335182418685442 0.5980617898234085 -0.5980638604252212 2.161386006219749
+  hidden linearVelocity_16 0.07980518128258735 -0.028356812282657778 -0.00018468865822608184
+  hidden angularVelocity_16 0.30911893752872455 1.0048689342318384 -1.0208287182130544
+  hidden translation_17 7.495578856153704e-05 0.20199935641247968 0.00014099614215314565
+  hidden rotation_17 -0.06154673075410536 -0.705764858099223 0.7057676423623185 3.2645224910178676
+  hidden linearVelocity_17 -0.31494050562669434 0.09375725636316182 5.813010923830839e-05
+  hidden angularVelocity_17 -1.0081134873102235 -3.298388949097215 -1.0436383346493516
+  hidden translation_18 0.1695021149597625 -0.10199913374452928 -0.03284741449285572
+  hidden rotation_18 -2.195151450566201e-06 -2.4874389662923193e-06 0.9999999999944971 4.9044399613961
+  hidden position_18_0 11596.283118143858
+  hidden linearVelocity_18 0.03036625587717476 0.16745710757767138 0.00011236108715432516
+  hidden angularVelocity_18 -0.0010487998475204891 0.0015366432105570395 -0.8899916051533016
+  hidden rotation_19 -0.23707685415734325 -0.6869465403042093 -0.6869490636043806 2.6760358818406664
+  hidden linearVelocity_19 0.018797358129547345 0.16876893215748595 0.00012537948410595783
+  hidden angularVelocity_19 -6.9946753932018275 0.7286778379229163 -0.9523106730387408
+  hidden translation_20 0.16950082456852433 0.10200209283354138 -0.0328482905508268
+  hidden rotation_20 2.345900151351464e-06 7.059961094997995e-06 -0.9999999999723269 0.5754114150698234
+  hidden position_20_0 11613.60005993722
+  hidden linearVelocity_20 -0.16813704604189336 0.22681705841498156 0.0003334772911026702
+  hidden angularVelocity_20 -0.0009960466835144386 0.0015360978011103952 -0.918996103530031
+  hidden rotation_21 -0.3114193949432368 0.671942945302281 0.6719454134910694 2.5377945393066055
+  hidden linearVelocity_21 -0.17741372045164652 0.21915303032551603 0.0003238830016885746
+  hidden angularVelocity_21 -8.557644069172571 -7.269562877094299 -1.0097355339015028
+  hidden translation_22 -0.17349847998875126 -0.10200032674302806 -0.032929205506794554
+  hidden rotation_22 1.8969859570514422e-06 -1.7885130192817617e-06 -0.9999999999966013 4.70721841417516
+  hidden position_22_0 11652.15912957937
+  hidden linearVelocity_22 -0.06732096371700685 -0.1684397099404013 -0.00025991413641798973
+  hidden angularVelocity_22 -0.0008039667333744716 0.0015308364457438978 -1.0266216328358726
+  hidden rotation_23 -0.0028364212019873374 0.7071026380728664 0.7071052354106552 3.1359198472362646
+  hidden linearVelocity_23 -0.05454508865828684 -0.17242875447779996 -0.0002702610132708594
+  hidden angularVelocity_23 7.184786844279933 -2.098634048118365 -1.0765912692493576
+  hidden translation_24 -0.1734992276125395 0.10199865677025044 -0.032930081561378735
+  hidden rotation_24 -1.976368073441005e-06 4.7185915090722015e-06 0.9999999999869145 0.7398146103840001
+  hidden position_24_0 11654.930162471774
+  hidden linearVelocity_24 -0.26802728222910666 -0.10882953005874806 -3.6569911440824366e-05
+  hidden angularVelocity_24 -0.0008372437323846808 0.0015318177610317493 -1.0086170154135914
+  hidden rotation_25 0.9652000341075572 0.1849170664816198 0.1849177457211796 4.67697280339293
+  hidden linearVelocity_25 -0.26250290922374403 -0.1208038465839266 -5.8127703176951014e-05
+  hidden angularVelocity_25 4.962576588100781 -10.231748964084188 -1.0720096561796866
+  translation 78.56412013508299 9.430608287954408 0.09351139741053836
+  rotation -0.0008700116645246864 -8.15736818464448e-05 0.9999996182126462 2.8249740420494867
+  controller "delivery_controller"
+  bodySlot [
+    Camera {
+      translation 0.272914 0.02 0.0753527
+      rotation 0 1 0 0.785
+      name "ground_camera"
+      fieldOfView 1
+    }
+    TouchSensor {
+      translation 0.24 2.20392e-07 -0.06
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+          }
+          geometry Cylinder {
+            height 0.5
+            radius 0.03
+          }
+        }
+      ]
+      name "bumper"
+      boundingObject Shape {
+        geometry Cylinder {
+          height 0.5
+          radius 0.03
+        }
+      }
+    }
+    Compass {
+    }
+    GPS {
+    }
+    Solid {
+      translation 0 0 0.3
+      children [
+        Camera {
+          translation 0.13 0 0.12
+          name "front_camera"
+          width 416
+          height 416
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0.639216 0.0588235
+          }
+          geometry Box {
+            size 0.3 0.4 0.3
+          }
+        }
+      ]
+      name "container"
+      boundingObject Box {
+        size 0.1 0.1 0.1
+      }
+      physics Physics {
+        mass 0.1
+      }
+    }
+  ]
+  lidarSlot [
+    HokuyoUrg04lxug01 {
+    }
+  ]
+}
+StraightRoadSegment {
+  translation -33.33 50 0.08
+  name "road_top_3"
+  length 63
+  locked FALSE
+}
+Bench {
+  translation -30 20 0
+  name "bench_left_1"
+}
+Bench {
+  translation -30 -20 0
+  name "bench_left_2"
+}
+Bench {
+  translation 30 20 0
+  rotation 0 0 1 3.141592653589793
+  name "bench_right_1"
+}
+Bench {
+  translation 30 -20 0
+  rotation 0 0 1 3.14159
+  name "bench_right_2"
+}
+StraightRoadSegment {
+  translation -100 50 0.01
+  name "road_top_1"
+  length 16
+  locked FALSE
+}
+StraightRoadSegment {
+  translation -84.14 50 0.01
+  name "road_top_2"
+  length 18
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 93.03 50 0.2
+  name "road_top_5"
+  length 7
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 50.02 28.27 0.02
+  rotation 0 0 1 1.5708
+  name "road_top_5(2)"
+  length 9
+  locked FALSE
+}
+Roundabout {
+  translation 50 50 0.02
+  rotation 0 0 1 -2.3561953071795863
+  name "roundabout_TR"
+  locked FALSE
+}
+Roundabout {
+  translation -50 -50 0.02
+  rotation 0 0 1 2.35619
+  name "roundabout_BL"
+  locked FALSE
+}
+RoadIntersection {
+  translation -50 50 0.04
+  rotation 0 0 1 -0.785395307179586
+  name "intersection_TL"
+  locked FALSE
+}
+RoadIntersection {
+  translation 50.0075 -49.8845 0.03
+  rotation 0 0 1 0.785398
+  name "intersection_TL(1)"
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 61.45 50 0.02
+  name "road_top_4"
+  length 26
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 50 69.03 0.01
+  rotation 0 0 1 1.5707996938995747
+  name "road_right_1"
+  length 31
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 50 -100 0.03
+  rotation 0 0 1 1.5707996938995747
+  name "road_right_4"
+  length 23
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 15.9516 -49.9968 0.01
+  rotation 0 0 -1 -5.307179586466759e-06
+  name "road_right_4(1)"
+  length 20
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 50 -35.4 0.03
+  rotation 0 0 1 1.5708
+  name "road_right_2"
+  length 57
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 50 -70.28 0.01
+  rotation 0 0 1 1.5708
+  name "road_right_3"
+  length 16
+  locked FALSE
+}
+StraightRoadSegment {
+  translation 65.11 -49.95 0.03
+  name "road_bottom"
+  length 35
+  locked FALSE
+}
+StraightRoadSegment {
+  translation -3 -50 0.03
+  name "road_bottom_4"
+  length 19
+  locked FALSE
+}
+StraightRoadSegment {
+  translation -100 -50 0.01
+  name "road_bottom_1"
+  length 13
+  locked FALSE
+}
+StraightRoadSegment {
+  translation -36.97 -50 0.02
+  name "road_bottom_2"
+  length 27
+  locked FALSE
+}
+StraightRoadSegment {
+  translation -50 65.58 0.02
+  rotation 0 0 1 1.5708
+  name "road_left"
+  length 35
+  locked FALSE
+}
+StraightRoadSegment {
+  translation -50 32.53 0.02
+  rotation 0 0 1 -1.5707953071795862
+  name "road_left_2"
+  length 60
+  locked FALSE
+}
+Robot {
+  translation 54.37 -41.53 -0.1
+  rotation 0 0 1 3.14159
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 58.35 -54.29 0
+  rotation 0 0 -1 -1.5707953071795862
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(30)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 45.4 -35.24 -0.23
+  rotation 0 0 1 -5.307179586466759e-06
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(1)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 41.51 -45.14 -0.1
+  rotation 0 0 1 -1.5708053071795867
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(2)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 35.57 -54.54 0
+  rotation 0 0 1 1.57079
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(3)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+Robot {
+  translation 54.66 -77.37 -0.09
+  rotation 0 0 1 3.14159
+  children [
+    Pole {
+      slot [
+        TrafficLight {
+          lamp_geometry TrafficLightStandardLampGeometry {
+          }
+        }
+      ]
+    }
+  ]
+  name "generic traffic light(4)"
+  model "generic traffic light"
+  controller "simple_traffic_light"
+  controllerArgs [
+    "15"
+    "60"
+    "g"
+  ]
+  customData "red"
+  window "<none>"
+}
+StraightRoadSegment {
+  translation -50 -75.65 0.01
+  rotation 0 0 1 1.5707996938995747
+  name "road_left_3"
+  length 16
+  locked FALSE
+}
+StraightRoadSegment {
+  translation -86.98 -50.01 0.02
+  rotation 0 0 1 7.33682e-06
+  name "road_left_4"
+  length 18
+  locked FALSE
+}
+StraightRoadSegment {
+  translation -50 -100 0.02
+  rotation 0 0 1 1.5707996938995747
+  name "road_left_4(1)"
+  length 16
+  locked FALSE
+}
+Pose {
+  translation 0 65 3
+  children [
+    Pose {
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
+Pose {
+  translation 65 0 3
+  rotation 0 0 1 -1.5708
+  children [
+    Pose {
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
+Pose {
+  translation 0 -65 3
+  rotation 0 0 1 3.14159
+  children [
+    Pose {
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            roughness 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
+Pose {
+  translation -65 0 3
+  rotation 0 0 1 1.5708
+  children [
+    Pose {
+      rotation 1 0 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.6 0.3 0
+            roughness 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
+SolidBox {
+  translation 0.29 0 0
+  name "Relva_Central"
+  size 80 80 0.005
+  appearance PBRAppearance {
+    baseColor 0.2 0.8 0.2
+    baseColorMap ImageTexture {
+      url [
+        "textures/grass_texture.jpg"
+      ]
+    }
+    roughness 0.5
+    metalness 0
+  }
+}
+Fountain {
+}
+Oak {
+  translation -10 10 0
+  name "tree_1"
+}
+Pine {
+  translation 10 10 0
+  name "tree_2"
+}
+Oak {
+  translation 10 -10 0
+  name "tree_3"
+}
+Pine {
+  translation -10 -10 0
+  name "tree_4"
+}
+TrashBin {
+  translation 30 0 0
+  name "trash bin_right"
+}
+TrashBin {
+  translation -30 0 0
+  name "trash bin_left"
+}
+FireHydrant {
+  translation 33 -35 0
+  scale 2
+  name "fire hydrant_right_2"
+}
+FireHydrant {
+  translation 33 34 0
+  scale 2
+  name "fire hydrant_right_1"
+}
+FireHydrant {
+  translation -33 34 0
+  scale 2
+  name "fire hydrant_left_1"
+}
+FireHydrant {
+  translation -33 -35 0
+  scale 2
+  name "fire hydrant_left_2"
+}
+CommercialBuilding {
+  translation 0 81.49 -0.3
+  name "building_top"
+}
+ResidentialBuilding {
+  translation 70 0 -0.29
+  rotation 0 0 1 -3.1415853071795863
+  name "building_right"
+}
+Solid {
+  translation 70.0017 -0.0999999 10
+  rotation 0 0 1 -3.14
+  name "gray_building_hitbox"
+  boundingObject Box {
+    size 15 57 22
+  }
+}
+Solid {
+  translation 30 -20 0
+  rotation 0 0 1 -3.14
+  name "bench_1_hitbox"
+  boundingObject Box {
+    size 1 3 3
+  }
+}
+Solid {
+  translation -29.85 20 0.34
+  rotation 0 0 1 -3.14
+  name "bench_4_hitbox"
+  boundingObject Box {
+    size 1 3 3
+  }
+}
+Solid {
+  translation 29.89 20 0
+  rotation 0 0 1 -3.14
+  name "bench_2_hitbox"
+  boundingObject Box {
+    size 1 2 3
+  }
+}
+Solid {
+  translation -29.88 -20 0
+  rotation 0 0 1 -3.14
+  name "bench_3_hitbox"
+  boundingObject Box {
+    size 1 3 3
+  }
+}
+Solid {
+  translation -68.8937 3.52877 10
+  rotation 0 0 1 -3.14
+  name "gray_building_hitbox(2)"
+  boundingObject Box {
+    size 15 57 22
+  }
+}
+Solid {
+  translation -0.2003 69.9107 24.17
+  rotation 0 0 1 -3.14
+  name "orange_building_hitbox(1)"
+  boundingObject Box {
+    size 23 23 50
+  }
+}
+Solid {
+  translation 0.0223834 -69.9093 24.17
+  rotation 0 0 1 -3.14
+  name "orange_building_hitbox(2)"
+  boundingObject Box {
+    size 23 23 50
+  }
+}
+CommercialBuilding {
+  translation -1.39579e-05 -75.26 -0.34
+  rotation 0 0 1 3.14159
+  name "building_bottom"
+}
+CommercialBuilding {
+  translation 88.48 -88.97 -0.6
+  rotation 0 0 1 3.14159
+  name "building_bottom(1)"
+}
+CommercialBuilding {
+  translation 66.36 -88.97 -0.71
+  rotation 0 0 1 3.14159
+  name "building_bottom(2)"
+}
+ResidentialBuilding {
+  translation -73.52 3.46997 -0.12
+  rotation 0 0 -1 3.67802e-06
+  name "building_left"
+}

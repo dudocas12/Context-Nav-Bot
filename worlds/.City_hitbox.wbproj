@@ -6,7 +6,8 @@ minimizedPerspectives: 000000ff00000000fd0000000200000001000002e000000206fc02000
 maximizedDockId: -1
 centralWidgetVisible: 1
 orthographicViewHeight: 1
-textFiles: 1 "controllers/delivery_controller/navigation.py" "controllers/delivery_controller/delivery_controller.py" "controllers/delivery_controller/llm_brain.py"
-globalOptionalRendering: LidarPointClouds
+textFiles: 0 "controllers/delivery_controller/navigation.py" "controllers/delivery_controller/delivery_controller.py" "controllers/delivery_controller/llm_brain.py" "controllers/simple_traffic_light/simple_traffic_light.py"
+globalOptionalRendering: LidarPointClouds::CameraFrustums
 consoles: Console:All:All
-renderingDevicePerspectives: TIAGo Base:camera;1;1;0;0
+renderingDevicePerspectives: TIAGo Base:front_camera;0;1.00284;0.296257;0.0296715;1208;248;429;429;0
+renderingDevicePerspectives: TIAGo Base:ground_camera;0;3.75;0;0;840;390;240;240;0

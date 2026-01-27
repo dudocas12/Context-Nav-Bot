@@ -21,6 +21,17 @@ class Driver:
         self.compass = self.robot.getDevice('compass')
         self.compass.enable(self.timestep)
         
+        # Initialize Cameras
+        self.ground_camera = self.robot.getDevice('ground_camera')
+        self.ground_camera.enable(self.timestep)
+        
+        self.front_camera = self.robot.getDevice('front_camera')
+        self.front_camera.enable(self.timestep)
+        
+        # Helper for YOLO (later)
+        self.camera_width = 416
+        self.camera_height = 416
+        
         # --- LIDAR ---
         try:
             self.lidar = self.robot.getDevice('Hokuyo URG-04LX-UG01')
