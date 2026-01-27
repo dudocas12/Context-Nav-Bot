@@ -40,7 +40,7 @@ def decide_destination(user_text):
 
     try:
         genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash-lite')
         
         # 2. Construct Prompt with Coordinates embedded
         # We dynamically build the list so the AI knows exactly where things are.
