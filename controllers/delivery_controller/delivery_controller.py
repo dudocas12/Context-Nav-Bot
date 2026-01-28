@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import simpledialog
 from navigation import Driver
 import llm_brain
+from vision_brain import RobotVision  # <--- NEW IMPORT
 
 # ==============================================================================
 # 🖥️ GUI POPUP FUNCTION
@@ -27,13 +28,19 @@ def get_user_command_popup():
 # ==============================================================================
 CURR_TURN_DIRECTION = None 
 
+# --- PHASE PRINTER ---
+current_phase_str = ""
+def print_phase(phase):
+    global current_phase_str
+    if phase != current_phase_str:
+        print(f"🔄 PHASE: {phase}")
+        current_phase_str = phase
+
 def safe_min(region):
-    """Safely gets minimum distance from a list, ignoring Infinity."""
     valid = [r for r in region if not math.isinf(r) and r > 0.0]
     return min(valid) if valid else 10.0
 
 def best_turn_direction(left_dist, right_dist, heading_error=0):
-    """Decides which way to turn based on open space + goal direction."""
     global CURR_TURN_DIRECTION
     SAFE_SIDE = 1.5 
     
@@ -54,7 +61,9 @@ def best_turn_direction(left_dist, right_dist, heading_error=0):
 # 🚀 MISSION SETUP
 # ==============================================================================
 bot = Driver()
-print("🚀 SYSTEM STARTING (REACTIVE + WATCHDOG)...")
+vision = RobotVision() 
+
+print("🚀 SYSTEM STARTING (VISION DEBUG MODE)...")
 
 user_request = get_user_command_popup()
 
@@ -66,7 +75,7 @@ if user_request:
 else:
     print("❌ No input. Going Home.")
     zone_name = "residential"
-    destination = (0, 0) #change later
+    destination = (0, 0)
 
 TARGETS = [destination]
 target_index = 0
@@ -76,11 +85,9 @@ SAFE_DISTANCE = 2.5
 CRITICAL_DISTANCE = 1.1  
 MAX_SPEED = 6.0
 
-# STATUS FLAGS
+# STATE
 recovery_timer = 0
 is_recovering = False
-
-# --- 🆕 WATCHDOG VARIABLES ---
 last_watchdog_time = time.time()
 last_watchdog_pos = (0, 0)
 stuck_escape_timer = 0
@@ -97,6 +104,10 @@ while bot.step() != -1:
     lidar_data = bot.get_lidar_scan()
     is_bumped = bot.check_bumpers()
     
+    # --- VISION CHECK ---
+    ground_img = bot.get_ground_image()
+    is_ground_safe = vision.check_ground_safety(ground_img, 64, 64)
+
     # 2. MISSION CHECK
     if target_index >= len(TARGETS):
         print(f"✅ ARRIVED AT {zone_name.upper()}. MISSION COMPLETE.")
@@ -120,32 +131,25 @@ while bot.step() != -1:
         continue
 
     # ==================================================
-    # 🐕 WATCHDOG (STUCK DETECTOR) - NEW!
+    # 🐕 WATCHDOG (STUCK DETECTOR)
     # ==================================================
-    # Every 4 seconds, check if we moved at least 0.5m
     if time.time() - last_watchdog_time > 4.0:
         dist_moved = math.sqrt((curr_x - last_watchdog_pos[0])**2 + (curr_y - last_watchdog_pos[1])**2)
-        
-        # If we haven't reached the goal, but we stopped moving... we are stuck.
         if dist_moved < 0.5 and not is_stuck and not is_recovering:
-            print("🛑 WATCHDOG: Robot is stuck! Initiating Escape Maneuver.")
+            # print("🛑 WATCHDOG: Robot is stuck!") # Commented out to focus on Vision
             is_stuck = True
-            stuck_escape_timer = 50 # 50 steps of chaos
-        
-        # Reset tracker
+            stuck_escape_timer = 50 
         last_watchdog_time = time.time()
         last_watchdog_pos = (curr_x, curr_y)
 
     if is_stuck:
+        print_phase("🐕 WATCHDOG ESCAPE")
         if stuck_escape_timer > 0:
-            # CHAOS MODE: Back up and twist randomly
-            # This breaks "symmetric" traps like U-shaped corners
             bot.set_speed(-3.0, 5.0) 
             stuck_escape_timer -= 1
         else:
-            print("🐕 WATCHDOG: Escaped. Resuming Navigation.")
             is_stuck = False
-            CURR_TURN_DIRECTION = None # Reset sticky logic
+            CURR_TURN_DIRECTION = None 
         continue
 
     # ==================================================
@@ -157,6 +161,7 @@ while bot.step() != -1:
         recovery_timer = 40
 
     if is_recovering:
+        print_phase("💥 CRASH RECOVERY")
         if recovery_timer > 0:
             bot.set_speed(-3.0, 0) 
             recovery_timer -= 1
@@ -166,7 +171,7 @@ while bot.step() != -1:
         continue
 
     # ==================================================
-    # 🧠 PRIORITY 2: REACTIVE NAVIGATION
+    # 🧠 PRIORITY 2: REACTIVE NAVIGATION (With Vision)
     # ==================================================
     
     n = len(lidar_data)
@@ -181,15 +186,23 @@ while bot.step() != -1:
     min_front = safe_min(front_region)
     min_right = safe_min(right_region)
 
+    # --- VISION INJECTION ---
+    if not is_ground_safe:
+        # !!! HERE IS THE PRINT YOU ASKED FOR !!!
+        print(f"⚠️ VISION: ROAD DETECTED! (Lidar: {min_front:.2f}m -> FORCED: 0.2m)")
+        min_front = 0.2 
+
     linear = 0.0
     angular = 0.0
     
     if min_front < CRITICAL_DISTANCE:
+        print_phase("🔄 CRITICAL AVOIDANCE (SPIN)")
         CURR_TURN_DIRECTION = best_turn_direction(min_left, min_right, heading_error)
         linear = 0.0
         angular = 3.0 if CURR_TURN_DIRECTION == "left" else -3.0
         
     elif min_front < SAFE_DISTANCE:
+        print_phase("⚠️ AVOIDING OBSTACLE/ROAD")
         CURR_TURN_DIRECTION = best_turn_direction(min_left, min_right, heading_error)
         factor = max((min_front - CRITICAL_DISTANCE) / (SAFE_DISTANCE - CRITICAL_DISTANCE), 0.2)
         linear = MAX_SPEED * factor
@@ -197,15 +210,12 @@ while bot.step() != -1:
         angular = turn_strength if CURR_TURN_DIRECTION == "left" else -turn_strength
         
     else:
+        print_phase("🟢 CRUISING")
         CURR_TURN_DIRECTION = None 
-        
-        # --- NEW: SOFT LANDING ---
-        # If closer than 3m, slow down proportionally
         if dist < 3.0:
             linear = max(2.0, MAX_SPEED * (dist / 3.0))
         else:
             linear = MAX_SPEED
-            
         angular = max(min(heading_error * 0.05, 2.0), -2.0)
 
     bot.set_speed(linear, angular)

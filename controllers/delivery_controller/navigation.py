@@ -99,3 +99,7 @@ class Driver:
         
     def step(self):
         return self.robot.step(self.timestep)
+        
+    def get_ground_image(self):
+        """Returns the raw image data from the ground camera"""
+        return self.ground_camera.getImage()
