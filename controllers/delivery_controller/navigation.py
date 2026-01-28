@@ -28,7 +28,7 @@ class Driver:
         self.front_camera = self.robot.getDevice('front_camera')
         self.front_camera.enable(self.timestep)
         
-        # Helper for YOLO (later)
+        # Helper for YOLO (unused in this version but kept for compatibility)
         self.camera_width = 416
         self.camera_height = 416
         
@@ -42,8 +42,7 @@ class Driver:
             print("⚠️ WARNING: Lidar not found!")
             self.lidar = None
             
-        # --- BUMPERS (NEW) ---
-        # We try to enable both left and right bumpers.
+        # --- BUMPERS ---
         self.bumpers = []
         bumper_names = ['bumper', 'bumper_left', 'bumper_right']
         
@@ -78,11 +77,8 @@ class Driver:
         return clean_scan
 
     def check_bumpers(self):
-        """
-        Returns True if ANY bumper is pressed.
-        """
+        """ Returns True if ANY bumper is pressed. """
         for b in self.bumpers:
-            # getValue returns 1.0 if touched, 0.0 otherwise
             if b.getValue() > 0.5: 
                 return True
         return False
@@ -103,3 +99,7 @@ class Driver:
     def get_ground_image(self):
         """Returns the raw image data from the ground camera"""
         return self.ground_camera.getImage()
+
+    def get_front_image(self):
+        """Returns the raw image data from the front camera"""
+        return self.front_camera.getImage()

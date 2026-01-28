@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import simpledialog
 from navigation import Driver
 import llm_brain
-from vision_brain import RobotVision  # <--- NEW IMPORT
+from vision_brain import RobotVision  
 
 # ==============================================================================
 # 🖥️ GUI POPUP FUNCTION
@@ -63,7 +63,7 @@ def best_turn_direction(left_dist, right_dist, heading_error=0):
 bot = Driver()
 vision = RobotVision() 
 
-print("🚀 SYSTEM STARTING (VISION DEBUG MODE)...")
+print("🚀 SYSTEM STARTING (NO YOLO MODE)...")
 
 user_request = get_user_command_popup()
 
@@ -81,8 +81,8 @@ TARGETS = [destination]
 target_index = 0
 
 # CONFIG
-SAFE_DISTANCE = 2.5      
-CRITICAL_DISTANCE = 1.1  
+SAFE_DISTANCE = 2.5       
+CRITICAL_DISTANCE = 1.1   
 MAX_SPEED = 6.0
 
 # STATE
@@ -136,7 +136,6 @@ while bot.step() != -1:
     if time.time() - last_watchdog_time > 4.0:
         dist_moved = math.sqrt((curr_x - last_watchdog_pos[0])**2 + (curr_y - last_watchdog_pos[1])**2)
         if dist_moved < 0.5 and not is_stuck and not is_recovering:
-            # print("🛑 WATCHDOG: Robot is stuck!") # Commented out to focus on Vision
             is_stuck = True
             stuck_escape_timer = 50 
         last_watchdog_time = time.time()
@@ -188,7 +187,6 @@ while bot.step() != -1:
 
     # --- VISION INJECTION ---
     if not is_ground_safe:
-        # !!! HERE IS THE PRINT YOU ASKED FOR !!!
         print(f"⚠️ VISION: ROAD DETECTED! (Lidar: {min_front:.2f}m -> FORCED: 0.2m)")
         min_front = 0.2 
 

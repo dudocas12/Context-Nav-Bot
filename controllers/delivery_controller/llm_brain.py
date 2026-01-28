@@ -9,7 +9,6 @@ try:
 except ImportError:
     GEMINI_API_KEY = None
 
-# We still keep this to build the prompt context
 ZONES = {
     "residential": {
         "coords": (85.2, -5.14), 
@@ -26,10 +25,7 @@ ZONES = {
 }
 
 def decide_destination(user_text):
-    """
-    Returns a dictionary: {'place_name': (x, y)}
-    """
-    # 1. Safety Checks
+    """ Returns a dictionary: {'place_name': (x, y)} """
     default_response = {"residential": (0.0, 0.0)}
     
     if not user_text:
@@ -42,8 +38,6 @@ def decide_destination(user_text):
         genai.configure(api_key=GEMINI_API_KEY)
         model = genai.GenerativeModel('gemini-2.5-flash-lite')
         
-        # 2. Construct Prompt with Coordinates embedded
-        # We dynamically build the list so the AI knows exactly where things are.
         locations_str = ""
         for name, data in ZONES.items():
             locations_str += f"- '{name}': located at {data['coords']}. Context: {data['desc']}\n"
@@ -69,26 +63,20 @@ def decide_destination(user_text):
         response = model.generate_content(prompt)
         raw_text = response.text.strip()
         
-        # 3. Clean and Parse JSON
-        # Sometimes AI adds ```json ... ``` wrappers, we remove them.
         if raw_text.startswith("```"):
             raw_text = raw_text.strip("`").replace("json", "").strip()
             
         data = json.loads(raw_text)
         
-        # Extract the first key-value pair
         place_name = list(data.keys())[0]
         coords_list = data[place_name]
         
-        # Convert list [x, y] to tuple (x, y) for the robot
         final_coords = (float(coords_list[0]), float(coords_list[1]))
         
         print(f"🧠 AI DECISION: {place_name} at {final_coords}")
-        
-        # Return exactly what you asked for: {place: (x, y)}
         return {place_name: final_coords}
 
     except Exception as e:
         print(f"❌ AI/JSON Error: {e}")
-        print(f"   Raw output was: '{raw_text}'") # Debugging help
+        print(f"   Raw output was: '{raw_text}'")
         return default_response
