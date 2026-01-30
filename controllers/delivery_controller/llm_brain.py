@@ -5,7 +5,7 @@ import json
 # 🔐 IMPORT SECRET KEY
 # ==============================================================================
 try:
-    from secrets import GEMINI_API_KEY
+    from my_secrets import GEMINI_API_KEY
 except ImportError:
     GEMINI_API_KEY = None
 
