@@ -26,7 +26,7 @@ ZONES = {
 
 def decide_destination(user_text):
     """ Returns a dictionary: {'place_name': (x, y)} """
-    default_response = {"residential": (0.0, 0.0)}
+    default_response = {"residential": (85.2, -5.14)}
     
     if not user_text:
         return default_response

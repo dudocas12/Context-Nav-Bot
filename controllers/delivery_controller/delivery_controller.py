@@ -50,7 +50,7 @@ class DeliveryController:
         # LOGIC STATE MACHINE
         self.state = "CRUISING"  
         self.scan_timer = 0      
-        self.retreat_timer = 0   
+        self.retreat_timer = 0   # Used for the hard reset
         self.commit_timer = 0    
         self.waiting_timer = 0   
         
@@ -71,7 +71,7 @@ class DeliveryController:
             self.current_phase_str = phase
 
     def setup_mission(self):
-        print("🚀 SYSTEM STARTING (RIGHT SCAN MODE)...")
+        print("🚀 SYSTEM STARTING (HARD RETREAT MODE)...")
         user_request = get_user_command_popup()
         if user_request:
             print(f"📩 User Request: {user_request}")
@@ -132,6 +132,8 @@ class DeliveryController:
         if not is_ground_safe:
             print(f"⚠️ VISION: ROAD DETECTED! (Lidar: {min_front:.2f}m -> FORCED: 0.2m)")
             min_front = 0.2 
+            if self.state == "COMMITTING":
+                self.commit_timer += 2
 
         linear = 0.0; angular = 0.0
         global CURR_TURN_DIRECTION
@@ -204,11 +206,9 @@ class DeliveryController:
                     is_ground_safe = self.vision.check_ground_safety(ground_img, 64, 64)
                     self.run_navigation_logic(lidar_data, is_ground_safe, dist, heading_error)
 
-            # --- STATE 2: SCANNING (Rotate RIGHT to find light) ---
+            # --- STATE 2: SCANNING (Rotate RIGHT) ---
             elif self.state == "SCANNING":
                 self.log_phase("👀 SCANNING FOR LIGHT")
-                
-                # CHANGED: Negative angular velocity = Rotate RIGHT
                 self.bot.set_speed(0, -0.5) 
                 self.scan_timer += 1
                 
@@ -234,7 +234,7 @@ class DeliveryController:
             # --- STATE 3: RETREATING (Turn 180) ---
             elif self.state == "RETREAT_TURN":
                 self.log_phase("🔙 RETREATING (TURNING 180)")
-                self.bot.set_speed(0, 2.5) 
+                self.bot.set_speed(0, -2.5) # turn right
                 self.retreat_timer -= 1
                 if self.retreat_timer <= 0:
                     self.state = "RETREAT_DRIVE"
@@ -288,11 +288,17 @@ class DeliveryController:
                     self.state = "COMMITTING"
                     self.commit_timer = 1000 
 
-            # --- STATE 7: COMMITTING (Blind Run) ---
+            # --- STATE 7: COMMITTING (Crossing with Safety) ---
             elif self.state == "COMMITTING":
                 self.log_phase(f"🚀 CROSSING COMMITMENT ({self.commit_timer})")
-                is_ground_safe = True 
+                
+                # SAFETY: Always check the ground! 
+                # If the ground is road (unsafe), navigation logic will try to avoid it.
+                is_ground_safe = self.vision.check_ground_safety(ground_img, 64, 64)
+                
+                # Drive (Ignoring Yellow Lines, but Respecting Black Road/Walls)
                 self.run_navigation_logic(lidar_data, is_ground_safe, dist, heading_error)
+                
                 self.commit_timer -= 1
                 if self.commit_timer <= 0:
                     print("🏁 COMMITMENT DONE - RESUMING PATROL")
