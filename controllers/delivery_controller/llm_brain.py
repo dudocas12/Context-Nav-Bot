@@ -21,6 +21,10 @@ ZONES = {
     "commercial": {
         "coords": (-62, 6), 
         "desc": "Supermarket, grocery store, buying food, restaurants, shopping, supplies."
+    },
+    "hospital": {
+        "coords": (-88, 4.98), 
+        "desc": "Hospital, medical care, emergency, doctors, nurses, supplies."
     }
 }
 

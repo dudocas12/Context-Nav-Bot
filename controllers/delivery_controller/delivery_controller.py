@@ -46,13 +46,15 @@ class DeliveryController:
         self.targets = []
         self.target_index = 0
         self.zone_name = "Unknown"
+        self.mission_phase = "OUTBOUND" # OUTBOUND -> PICKUP -> INBOUND -> DONE
         
         # LOGIC STATE MACHINE
         self.state = "CRUISING"  
         self.scan_timer = 0      
-        self.retreat_timer = 0   # Used for the hard reset
+        self.retreat_timer = 0   
         self.commit_timer = 0    
         self.waiting_timer = 0   
+        self.pickup_timer = 0    # <--- NEW
         
         # Recovery
         self.recovery_timer = 0
@@ -71,7 +73,7 @@ class DeliveryController:
             self.current_phase_str = phase
 
     def setup_mission(self):
-        print("🚀 SYSTEM STARTING (HARD RETREAT MODE)...")
+        print("🚀 SYSTEM STARTING (FULL DELIVERY CYCLE)...")
         user_request = get_user_command_popup()
         if user_request:
             print(f"📩 User Request: {user_request}")
@@ -82,11 +84,14 @@ class DeliveryController:
             print("❌ No input. Going Home.")
             self.zone_name = "residential"
             destination = (0, 0)
+            
         self.targets = [destination]
+        self.mission_phase = "OUTBOUND"
         print(f"🏁 STARTING MISSION: Going to {self.zone_name.upper()} {destination}")
 
     # --- WATCHDOG & RECOVERY ---
     def check_watchdog(self, curr_x, curr_y):
+        # Disable watchdog during pickup/wait states
         if self.state == "CRUISING" and time.time() - self.last_watchdog_time > 4.0:
             dist = math.sqrt((curr_x - self.last_watchdog_pos[0])**2 + (curr_y - self.last_watchdog_pos[1])**2)
             if dist < 0.5 and not self.is_stuck and not self.is_recovering:
@@ -166,22 +171,41 @@ class DeliveryController:
             ground_img = self.bot.get_ground_image()
             self.vision_step_counter += 1
 
-            # MISSION CHECK
+            # MISSION TARGET CHECK
             if self.target_index >= len(self.targets):
-                print(f"✅ ARRIVED AT {self.zone_name.upper()}. MISSION COMPLETE.")
-                self.bot.stop(); break
+                # 1. ARRIVED AT DESTINATION (Outbound Complete)
+                if self.mission_phase == "OUTBOUND":
+                    print(f"📦 ARRIVED AT {self.zone_name.upper()}. STARTING PICKUP...")
+                    self.bot.stop()
+                    self.state = "PICKUP"
+                    self.pickup_timer = 150 # ~5 seconds (30ms steps * 150 ≈ 4.5s)
+                    self.mission_phase = "PICKUP"
+                    # Reset target index logic won't work directly here, we handle logic in PICKUP state
+                    
+                # 3. ARRIVED AT HOME (Inbound Complete)
+                elif self.mission_phase == "INBOUND":
+                    print(f"✅ HOME SWEET HOME. DELIVERY COMPLETE.")
+                    self.bot.stop()
+                    self.mission_phase = "DONE"
+                    break
 
-            t_x, t_y = self.targets[self.target_index]
-            dx = t_x - curr_x; dy = t_y - curr_y
-            dist = math.sqrt(dx*dx + dy*dy)
-            target_rad = math.atan2(dy, dx)
-            target_deg = math.degrees(target_rad)
-            heading_error = target_deg - curr_heading
-            while heading_error > 180: heading_error -= 360
-            while heading_error < -180: heading_error += 360
+            # Calculate Distance to Current Target (If we have targets)
+            if self.target_index < len(self.targets):
+                t_x, t_y = self.targets[self.target_index]
+                dx = t_x - curr_x; dy = t_y - curr_y
+                dist = math.sqrt(dx*dx + dy*dy)
+                target_rad = math.atan2(dy, dx)
+                target_deg = math.degrees(target_rad)
+                heading_error = target_deg - curr_heading
+                while heading_error > 180: heading_error -= 360
+                while heading_error < -180: heading_error += 360
 
-            if dist < 0.5: 
-                print(f"🎉 Reached Target {self.target_index}!"); self.target_index += 1; continue
+                if dist < 0.5: 
+                    print(f"🎉 Reached Target Node {self.target_index}!")
+                    self.target_index += 1
+            else:
+                # If no targets left, just maintain 0 distance vars to prevent crashes
+                dist = 0; heading_error = 0
 
             # RECOVERY CHECK
             self.check_watchdog(curr_x, curr_y)
@@ -191,6 +215,27 @@ class DeliveryController:
             # 🚦 STATE MACHINE LOGIC
             # ==========================================================
             
+            # --- STATE 0: PICKUP SIMULATION ---
+            if self.state == "PICKUP":
+                self.log_phase("📦 PICKUP IN PROGRESS")
+                self.bot.set_speed(0, 0)
+                
+                # Simple Countdown Display
+                if self.pickup_timer % 30 == 0:
+                    print(f"⏳ ETA: {self.pickup_timer // 30} seconds...")
+                
+                self.pickup_timer -= 1
+                
+                if self.pickup_timer <= 0:
+                    print("✅ PICKUP DONE. RETURNING TO RESIDENTIAL (BASE).")
+                    # Set new target: Home (Residential coords: 85.2, -5.14 approx)
+                    # We hardcode residential here based on llm_brain knowledge
+                    self.targets = [(85.2, -5.14)]
+                    self.target_index = 0
+                    self.mission_phase = "INBOUND"
+                    self.state = "CRUISING"
+                continue
+
             # --- STATE 1: CRUISING ---
             if self.state == "CRUISING":
                 self.log_phase("🟢 CRUISING")
@@ -204,7 +249,9 @@ class DeliveryController:
                     self.scan_timer = 0
                 else:
                     is_ground_safe = self.vision.check_ground_safety(ground_img, 64, 64)
-                    self.run_navigation_logic(lidar_data, is_ground_safe, dist, heading_error)
+                    # Only run nav if we have a valid target
+                    if self.target_index < len(self.targets):
+                        self.run_navigation_logic(lidar_data, is_ground_safe, dist, heading_error)
 
             # --- STATE 2: SCANNING (Rotate RIGHT) ---
             elif self.state == "SCANNING":
@@ -234,7 +281,7 @@ class DeliveryController:
             # --- STATE 3: RETREATING (Turn 180) ---
             elif self.state == "RETREAT_TURN":
                 self.log_phase("🔙 RETREATING (TURNING 180)")
-                self.bot.set_speed(0, -2.5) # turn right
+                self.bot.set_speed(0, 2.5) 
                 self.retreat_timer -= 1
                 if self.retreat_timer <= 0:
                     self.state = "RETREAT_DRIVE"
@@ -291,14 +338,8 @@ class DeliveryController:
             # --- STATE 7: COMMITTING (Crossing with Safety) ---
             elif self.state == "COMMITTING":
                 self.log_phase(f"🚀 CROSSING COMMITMENT ({self.commit_timer})")
-                
-                # SAFETY: Always check the ground! 
-                # If the ground is road (unsafe), navigation logic will try to avoid it.
                 is_ground_safe = self.vision.check_ground_safety(ground_img, 64, 64)
-                
-                # Drive (Ignoring Yellow Lines, but Respecting Black Road/Walls)
                 self.run_navigation_logic(lidar_data, is_ground_safe, dist, heading_error)
-                
                 self.commit_timer -= 1
                 if self.commit_timer <= 0:
                     print("🏁 COMMITMENT DONE - RESUMING PATROL")

@@ -6,7 +6,7 @@ maximizedDockId: -1
 centralWidgetVisible: 1
 renderingMode: PLAIN
 orthographicViewHeight: 1
-textFiles: 0 "controllers/delivery_controller/delivery_controller.py" "controllers/delivery_controller/llm_brain.py" "controllers/delivery_controller/vision_brain.py"
+textFiles: 1 "controllers/delivery_controller/delivery_controller.py" "controllers/delivery_controller/llm_brain.py" "controllers/delivery_controller/vision_brain.py"
 globalOptionalRendering: LidarPointClouds::CameraFrustums
 consoles: Console:All:All
 renderingDevicePerspectives: TIAGo Base:front_camera;1;0.334312;0.81631;0
