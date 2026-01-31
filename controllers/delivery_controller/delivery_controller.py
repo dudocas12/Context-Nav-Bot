@@ -7,14 +7,70 @@ import llm_brain
 from vision_brain import RobotVision  
 
 # ... (Standard Helper Functions) ...
+# ==============================================================================
+# 🖥️ HELPER: MODERN GUI POPUP
+# ==============================================================================
 def get_user_command_popup():
     root = tk.Tk()
-    root.withdraw()
-    root.attributes('-topmost', True) 
-    user_input = simpledialog.askstring("Robot Interface", "Where should I go?")
-    root.destroy()
-    return user_input
+    root.withdraw()  # Hide the main window
+    
+    # Create Custom Dialog
+    dialog = tk.Toplevel(root)
+    dialog.title("🤖 Context-Nav Bot")
+    dialog.geometry("400x220")
+    dialog.configure(bg="#2C3E50")  # Dark Blue-Grey Background
+    dialog.attributes('-topmost', True)
+    
+    # Center the window on screen
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width - 400) // 2
+    y = (screen_height - 220) // 2
+    dialog.geometry(f"400x220+{x}+{y}")
 
+    # Variable to store result
+    user_input = tk.StringVar()
+
+    # Title Label
+    lbl_title = tk.Label(dialog, text="Where should I go?", 
+                         font=("Segoe UI", 16, "bold"), 
+                         bg="#2C3E50", fg="#ECF0F1")
+    lbl_title.pack(pady=(20, 10))
+
+    # Subtitle/Instruction
+    lbl_sub = tk.Label(dialog, text="(e.g., 'I'm hungry', 'Go to the park')", 
+                       font=("Segoe UI", 10, "italic"), 
+                       bg="#2C3E50", fg="#BDC3C7")
+    lbl_sub.pack(pady=(0, 15))
+
+    # Input Field
+    entry = tk.Entry(dialog, textvariable=user_input, 
+                     font=("Segoe UI", 12), width=30, 
+                     bd=0, relief="flat", justify="center")
+    entry.pack(ipady=8, padx=20)
+    entry.focus_set()  # Auto-focus the text box
+
+    # Submit Button Logic
+    def on_submit(event=None):
+        dialog.destroy()
+        root.destroy()
+
+    # Submit Button
+    btn = tk.Button(dialog, text="🚀 Start Mission", command=on_submit,
+                    font=("Segoe UI", 11, "bold"), 
+                    bg="#27AE60", fg="white", 
+                    activebackground="#2ECC71", activeforeground="white",
+                    bd=0, relief="flat", cursor="hand2")
+    btn.pack(pady=20, ipadx=20, ipady=5)
+
+    # Bind 'Enter' key to submit
+    dialog.bind('<Return>', on_submit)
+
+    # Wait for window to close
+    root.wait_window(dialog)
+    
+    return user_input.get()
+    
 CURR_TURN_DIRECTION = None 
 
 def safe_min(region):
