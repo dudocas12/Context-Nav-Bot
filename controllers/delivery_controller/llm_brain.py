@@ -1,4 +1,4 @@
-import google.generativeai as genai
+from google import genai
 import json
 
 # ==============================================================================
@@ -12,25 +12,44 @@ except ImportError:
 ZONES = {
     "residential": {
         "coords": (85.2, -5.14), 
-        "desc": "Home base, my house, sleeping, delivery drop-off, safety."
+        "desc": "Home base, my house, sleeping, delivery drop-off, safety." # approved
     },
     "park": {
         "coords": (0.0, 0.0), 
-        "desc": "Nature, walking, running, trees, grass, relaxing, outside."
+        "desc": "Nature, walking, running, trees, grass, relaxing, outside." # approved
     },
-    "commercial": {
-        "coords": (-62, 6), 
-        "desc": "Supermarket, grocery store, buying food, restaurants, shopping, supplies."
+    "shopping_mall": {
+        "coords": (1.3, 55.8), # approved
+        "desc": "Shopping mall, shops, buying food, restaurants, shopping, supplies."
     },
     "hospital": {
         "coords": (-88, 4.98), 
-        "desc": "Hospital, medical care, emergency, doctors, nurses, supplies."
-    }
-}
+        "desc": "Hospital, medical care, emergency, doctors, nurses, supplies."}, # approved
+    "restaurant": {
+        "coords": (87.2, -59.8), 
+        "desc": "Restaurant, food, eating, lunch, dinner, supplies." # approved
+    },
+    "gas_station": {
+        "coords": (84.6, -72.4), # approved
+        "desc": "Gas station, fuel, car, supplies."
+    },
+    "office": {
+        "coords": (-72.9, 68.9), # approved
+        "desc": "Office, work, workplace"
+    },
+    "museum": {
+        "coords": (82.3, 90.5), # approved
+        "desc": "Museum, art, culture, history, exhibitions"
+    },
+    "church": {
+        "coords": (-91.5, -80.6), # approved
+        "desc": "Church, religion, worship, prayer, community"
+    },
+}     
 
 def decide_destination(user_text):
     """ Returns a dictionary: {'place_name': (x, y)} """
-    default_response = {"residential": (85.2, -5.14)}
+    default_response = {"residential": (0.0, 0.0)}
     
     if not user_text:
         return default_response
@@ -39,8 +58,8 @@ def decide_destination(user_text):
         return default_response
 
     try:
-        genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel('gemini-2.5-flash-lite')
+        # ✅ NEW SDK SYNTAX
+        client = genai.Client(api_key=GEMINI_API_KEY)
         
         locations_str = ""
         for name, data in ZONES.items():
@@ -64,7 +83,13 @@ def decide_destination(user_text):
         """
         
         print(f"☁️ Sending '{user_text}' to Gemini...")
-        response = model.generate_content(prompt)
+        
+        # ✅ NEW GENERATION CALL
+        response = client.models.generate_content(
+            model='gemini-2.5-flash', 
+            contents=prompt
+        )
+        
         raw_text = response.text.strip()
         
         if raw_text.startswith("```"):
@@ -82,5 +107,4 @@ def decide_destination(user_text):
 
     except Exception as e:
         print(f"❌ AI/JSON Error: {e}")
-        print(f"   Raw output was: '{raw_text}'")
         return default_response

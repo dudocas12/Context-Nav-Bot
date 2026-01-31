@@ -42,22 +42,20 @@ class Driver:
             print("⚠️ WARNING: Lidar not found!")
             self.lidar = None
             
-        # --- BUMPERS ---
+        # --- BUMPERS (FIXED) ---
         self.bumpers = []
-        bumper_names = ['bumper', 'bumper_left', 'bumper_right']
+        # TIAGo Base only has one device named "bumper"
+        bumper_names = ['bumper'] 
         
         for name in bumper_names:
-            try:
-                device = self.robot.getDevice(name)
-                if device:
-                    device.enable(self.timestep)
-                    self.bumpers.append(device)
-                    print(f"✅ Bumper '{name}' Enabled")
-            except:
-                pass
+            device = self.robot.getDevice(name)
+            if device:
+                device.enable(self.timestep)
+                self.bumpers.append(device)
+                print(f"✅ Bumper '{name}' Enabled")
         
         if not self.bumpers:
-            print("⚠️ WARNING: No bumpers found! Check Scene Tree names.")
+            print("⚠️ WARNING: No bumpers found!")
 
     def get_pose(self):
         """ Returns (x, y, heading_degrees) """

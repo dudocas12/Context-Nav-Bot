@@ -7,70 +7,42 @@ import llm_brain
 from vision_brain import RobotVision  
 
 # ... (Standard Helper Functions) ...
-# ==============================================================================
-# 🖥️ HELPER: MODERN GUI POPUP
-# ==============================================================================
 def get_user_command_popup():
     root = tk.Tk()
-    root.withdraw()  # Hide the main window
+    root.withdraw()
+    root.attributes('-topmost', True) 
     
-    # Create Custom Dialog
     dialog = tk.Toplevel(root)
     dialog.title("🤖 Context-Nav Bot")
     dialog.geometry("400x220")
-    dialog.configure(bg="#2C3E50")  # Dark Blue-Grey Background
+    dialog.configure(bg="#2C3E50")
     dialog.attributes('-topmost', True)
     
-    # Center the window on screen
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x = (screen_width - 400) // 2
     y = (screen_height - 220) // 2
     dialog.geometry(f"400x220+{x}+{y}")
 
-    # Variable to store result
     user_input = tk.StringVar()
 
-    # Title Label
-    lbl_title = tk.Label(dialog, text="Where should I go?", 
-                         font=("Segoe UI", 16, "bold"), 
-                         bg="#2C3E50", fg="#ECF0F1")
-    lbl_title.pack(pady=(20, 10))
-
-    # Subtitle/Instruction
-    lbl_sub = tk.Label(dialog, text="(e.g., 'I'm hungry', 'Go to the park')", 
-                       font=("Segoe UI", 10, "italic"), 
-                       bg="#2C3E50", fg="#BDC3C7")
-    lbl_sub.pack(pady=(0, 15))
-
-    # Input Field
-    entry = tk.Entry(dialog, textvariable=user_input, 
-                     font=("Segoe UI", 12), width=30, 
-                     bd=0, relief="flat", justify="center")
+    tk.Label(dialog, text="Where should I go?", font=("Segoe UI", 16, "bold"), bg="#2C3E50", fg="#ECF0F1").pack(pady=(20, 10))
+    tk.Label(dialog, text="(e.g., 'I'm hungry', 'Go to the park')", font=("Segoe UI", 10, "italic"), bg="#2C3E50", fg="#BDC3C7").pack(pady=(0, 15))
+    
+    entry = tk.Entry(dialog, textvariable=user_input, font=("Segoe UI", 12), width=30, bd=0, relief="flat", justify="center")
     entry.pack(ipady=8, padx=20)
-    entry.focus_set()  # Auto-focus the text box
+    entry.focus_set()
 
-    # Submit Button Logic
     def on_submit(event=None):
         dialog.destroy()
         root.destroy()
 
-    # Submit Button
-    btn = tk.Button(dialog, text="🚀 Start Mission", command=on_submit,
-                    font=("Segoe UI", 11, "bold"), 
-                    bg="#27AE60", fg="white", 
-                    activebackground="#2ECC71", activeforeground="white",
-                    bd=0, relief="flat", cursor="hand2")
-    btn.pack(pady=20, ipadx=20, ipady=5)
-
-    # Bind 'Enter' key to submit
+    tk.Button(dialog, text="🚀 Start Mission", command=on_submit, font=("Segoe UI", 11, "bold"), bg="#27AE60", fg="white", bd=0, relief="flat", cursor="hand2").pack(pady=20, ipadx=20, ipady=5)
     dialog.bind('<Return>', on_submit)
-
-    # Wait for window to close
     root.wait_window(dialog)
     
     return user_input.get()
-    
+
 CURR_TURN_DIRECTION = None 
 
 def safe_min(region):
@@ -102,7 +74,7 @@ class DeliveryController:
         self.targets = []
         self.target_index = 0
         self.zone_name = "Unknown"
-        self.mission_phase = "OUTBOUND" # OUTBOUND -> PICKUP -> INBOUND -> DONE
+        self.mission_phase = "OUTBOUND"
         
         # LOGIC STATE MACHINE
         self.state = "CRUISING"  
@@ -110,7 +82,7 @@ class DeliveryController:
         self.retreat_timer = 0   
         self.commit_timer = 0    
         self.waiting_timer = 0   
-        self.pickup_timer = 0    # <--- NEW
+        self.pickup_timer = 0    
         
         # Recovery
         self.recovery_timer = 0
@@ -129,7 +101,7 @@ class DeliveryController:
             self.current_phase_str = phase
 
     def setup_mission(self):
-        print("🚀 SYSTEM STARTING (FULL DELIVERY CYCLE)...")
+        print("🚀 SYSTEM STARTING (TURN & COMMIT MODE)...")
         user_request = get_user_command_popup()
         if user_request:
             print(f"📩 User Request: {user_request}")
@@ -140,27 +112,32 @@ class DeliveryController:
             print("❌ No input. Going Home.")
             self.zone_name = "residential"
             destination = (0, 0)
-            
+        
         self.targets = [destination]
         self.mission_phase = "OUTBOUND"
         print(f"🏁 STARTING MISSION: Going to {self.zone_name.upper()} {destination}")
 
-    # --- WATCHDOG & RECOVERY ---
+    # --- WATCHDOG (UPDATED) ---
     def check_watchdog(self, curr_x, curr_y):
         # Disable watchdog during pickup/wait states
         if self.state == "CRUISING" and time.time() - self.last_watchdog_time > 4.0:
             dist = math.sqrt((curr_x - self.last_watchdog_pos[0])**2 + (curr_y - self.last_watchdog_pos[1])**2)
-            if dist < 0.5 and not self.is_stuck and not self.is_recovering:
+            if dist < 1 and not self.is_stuck and not self.is_recovering:
                 self.is_stuck = True
-                self.stuck_escape_timer = 50 
+                # Trigger the Turn & Commit sequence
+                self.state = "WATCHDOG_TURN"
+                self.stuck_escape_timer = 130 # ~180 degree turn
             self.last_watchdog_time = time.time()
             self.last_watchdog_pos = (curr_x, curr_y)
 
+    # --- RECOVERY (UPDATED) ---
     def run_recovery_logic(self, is_bumped):
+        # 1. Bumpers (Wall Crash) - Keep Simple Backup
         if is_bumped and not self.is_recovering:
             print("💥 CRASH! Backing up.")
             self.is_recovering = True
             self.recovery_timer = 40
+            
         if self.is_recovering:
             self.log_phase("💥 CRASH RECOVERY")
             if self.recovery_timer > 0:
@@ -170,15 +147,7 @@ class DeliveryController:
                 self.is_recovering = False
                 global CURR_TURN_DIRECTION; CURR_TURN_DIRECTION = None
             return True 
-        if self.is_stuck:
-            self.log_phase("🐕 WATCHDOG ESCAPE")
-            if self.stuck_escape_timer > 0:
-                self.bot.set_speed(-3.0, 5.0) 
-                self.stuck_escape_timer -= 1
-            else:
-                self.is_stuck = False
-                CURR_TURN_DIRECTION = None 
-            return True 
+            
         return False 
 
     # --- NAVIGATION LOGIC ---
@@ -229,23 +198,19 @@ class DeliveryController:
 
             # MISSION TARGET CHECK
             if self.target_index >= len(self.targets):
-                # 1. ARRIVED AT DESTINATION (Outbound Complete)
                 if self.mission_phase == "OUTBOUND":
                     print(f"📦 ARRIVED AT {self.zone_name.upper()}. STARTING PICKUP...")
                     self.bot.stop()
                     self.state = "PICKUP"
-                    self.pickup_timer = 150 # ~5 seconds (30ms steps * 150 ≈ 4.5s)
+                    self.pickup_timer = 150 
                     self.mission_phase = "PICKUP"
-                    # Reset target index logic won't work directly here, we handle logic in PICKUP state
                     
-                # 3. ARRIVED AT HOME (Inbound Complete)
                 elif self.mission_phase == "INBOUND":
                     print(f"✅ HOME SWEET HOME. DELIVERY COMPLETE.")
                     self.bot.stop()
                     self.mission_phase = "DONE"
                     break
 
-            # Calculate Distance to Current Target (If we have targets)
             if self.target_index < len(self.targets):
                 t_x, t_y = self.targets[self.target_index]
                 dx = t_x - curr_x; dy = t_y - curr_y
@@ -260,10 +225,9 @@ class DeliveryController:
                     print(f"🎉 Reached Target Node {self.target_index}!")
                     self.target_index += 1
             else:
-                # If no targets left, just maintain 0 distance vars to prevent crashes
                 dist = 0; heading_error = 0
 
-            # RECOVERY CHECK
+            # RECOVERY CHECK (Global)
             self.check_watchdog(curr_x, curr_y)
             if self.run_recovery_logic(is_bumped): continue
 
@@ -275,17 +239,11 @@ class DeliveryController:
             if self.state == "PICKUP":
                 self.log_phase("📦 PICKUP IN PROGRESS")
                 self.bot.set_speed(0, 0)
-                
-                # Simple Countdown Display
                 if self.pickup_timer % 30 == 0:
                     print(f"⏳ ETA: {self.pickup_timer // 30} seconds...")
-                
                 self.pickup_timer -= 1
-                
                 if self.pickup_timer <= 0:
                     print("✅ PICKUP DONE. RETURNING TO RESIDENTIAL (BASE).")
-                    # Set new target: Home (Residential coords: 85.2, -5.14 approx)
-                    # We hardcode residential here based on llm_brain knowledge
                     self.targets = [(85.2, -5.14)]
                     self.target_index = 0
                     self.mission_phase = "INBOUND"
@@ -295,9 +253,7 @@ class DeliveryController:
             # --- STATE 1: CRUISING ---
             if self.state == "CRUISING":
                 self.log_phase("🟢 CRUISING")
-                
                 is_crosswalk = self.vision.detect_crosswalk(ground_img, 64, 64)
-                
                 if is_crosswalk:
                     print("🦓 CROSSWALK DETECTED - STOPPING & SCANNING")
                     self.bot.stop()
@@ -305,7 +261,6 @@ class DeliveryController:
                     self.scan_timer = 0
                 else:
                     is_ground_safe = self.vision.check_ground_safety(ground_img, 64, 64)
-                    # Only run nav if we have a valid target
                     if self.target_index < len(self.targets):
                         self.run_navigation_logic(lidar_data, is_ground_safe, dist, heading_error)
 
@@ -324,7 +279,6 @@ class DeliveryController:
                 if self.vision_step_counter % 15 == 0:
                     front_img = self.bot.get_front_image()
                     light_data = self.vision.scan_for_traffic_lights(front_img, 416, 416)
-                    
                     if light_data['found']:
                         if light_data['color'] != 'unknown':
                             print(f"🚦 FOUND VALID LIGHT ({light_data['color'].upper()}) - LOCKING ON")
@@ -334,18 +288,29 @@ class DeliveryController:
                         else:
                             print(f"⚠️ IGNORED DISTANT LIGHT (Unknown Color)")
 
-            # --- STATE 3: RETREATING (Turn 180) ---
-            elif self.state == "RETREAT_TURN":
-                self.log_phase("🔙 RETREATING (TURNING 180)")
+            # --- STATE 3: RETREATING / WATCHDOG (Turn 180) ---
+            # Used by both Traffic Light Timeout AND Watchdog
+            elif self.state == "RETREAT_TURN" or self.state == "WATCHDOG_TURN":
+                self.log_phase("🔙 TURNING AROUND (180°)")
                 self.bot.set_speed(0, 2.5) 
-                self.retreat_timer -= 1
-                if self.retreat_timer <= 0:
-                    self.state = "RETREAT_DRIVE"
-                    self.retreat_timer = 150 
+                
+                # Check which timer to use (Retreat or Watchdog escape)
+                if self.state == "WATCHDOG_TURN":
+                    self.stuck_escape_timer -= 1
+                    if self.stuck_escape_timer <= 0:
+                        self.state = "WATCHDOG_COMMIT"
+                        self.stuck_escape_timer = 100 # 100 Steps Forward
+                else:
+                    self.retreat_timer -= 1
+                    if self.retreat_timer <= 0:
+                        self.state = "RETREAT_DRIVE"
+                        self.retreat_timer = 100 # 100 Steps Forward
 
-            # --- STATE 4: RETREATING (Drive Away) ---
-            elif self.state == "RETREAT_DRIVE":
-                self.log_phase("🔙 RETREATING (DRIVING AWAY)")
+            # --- STATE 4: RETREATING / WATCHDOG (Drive Away) ---
+            elif self.state == "RETREAT_DRIVE" or self.state == "WATCHDOG_COMMIT":
+                self.log_phase("💨 COMMITTING TO NEW PATH")
+                
+                # Simple obstacle avoidance while driving blind
                 n = len(lidar_data)
                 min_front = safe_min(lidar_data[int(n*0.3) : int(n*0.7)])
                 
@@ -354,10 +319,16 @@ class DeliveryController:
                 else:
                     self.bot.set_speed(4.0, 0) 
                 
-                self.retreat_timer -= 1
-                if self.retreat_timer <= 0:
-                    print("🔄 RETREAT COMPLETE - RESUMING CRUISE")
-                    self.state = "CRUISING"
+                if self.state == "WATCHDOG_COMMIT":
+                    self.stuck_escape_timer -= 1
+                    if self.stuck_escape_timer <= 0:
+                         self.is_stuck = False
+                         self.state = "CRUISING"
+                else:
+                    self.retreat_timer -= 1
+                    if self.retreat_timer <= 0:
+                        print("🔄 RESET COMPLETE - RESUMING CRUISE")
+                        self.state = "CRUISING"
 
             # --- STATE 5: WAITING (Stare at light) ---
             elif self.state == "WAITING":
@@ -374,7 +345,6 @@ class DeliveryController:
                 if self.vision_step_counter % 15 == 0:
                     front_img = self.bot.get_front_image()
                     light_data = self.vision.scan_for_traffic_lights(front_img, 416, 416)
-                    
                     if light_data['found'] and light_data['color'] == 'green':
                         print("✅ GREEN LIGHT! ALIGNING TO TARGET...")
                         self.state = "ALIGNING"
