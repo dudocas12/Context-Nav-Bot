@@ -33,8 +33,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.1765467925969675 -0.031737345735154944 0.9837804485297573 3.401728899914918
-  position 105.08887653265778 -3.932131792335077 10.626222956191002
+  orientation 0.32557188935780823 0.0626460584038782 -0.9434396728071409 2.831333155029005
+  position 159.01578911946595 119.8646438716004 120.79011494119841
   follow "TIAGo Base:container"
 }
 TexturedBackground {
@@ -42,7 +42,7 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 RectangleArena {
-  translation 0 4.13 0
+  translation 0 0.08 0
   floorSize 200 200
   floorAppearance PBRAppearance {
     baseColor 0.6 0.6 0.6
@@ -160,7 +160,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -185,7 +185,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -210,7 +210,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -235,7 +235,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -260,7 +260,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -285,7 +285,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -310,7 +310,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -334,7 +334,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -358,7 +358,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -382,7 +382,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -406,7 +406,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -430,7 +430,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -454,7 +454,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -478,7 +478,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -502,7 +502,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -526,7 +526,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -550,7 +550,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -574,7 +574,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -598,7 +598,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -622,7 +622,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -646,7 +646,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -670,7 +670,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -694,7 +694,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -718,7 +718,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -742,7 +742,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -766,7 +766,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 ResidentialBuilding {
@@ -775,60 +775,60 @@ ResidentialBuilding {
   name "building_right(1)"
 }
 TiagoBase {
-  hidden position_0_0 44781.878670794285
-  hidden position_0_1 44767.15169270831
-  hidden position_0_2 17.694017816070446
-  hidden position_0_3 -46.13984859765933
-  hidden position_0_4 -49.03558699141948
-  hidden position_0_5 -330.7646581471139
-  hidden linearVelocity_0 -1.2090407794957115e-07 -2.1812686849829133e-08 -4.990803909918463e-11
-  hidden angularVelocity_0 5.033614680057214e-09 -2.4042026880466214e-08 2.2211899292758735e-08
-  hidden translation_12 0.01098777506898685 -0.0058935202722238955 0.026991839694352704
-  hidden rotation_12 -0.4956676971293296 -0.8602121063566174 -0.11978591778676928 -0.05335217228945144
-  hidden linearVelocity_12 -1.20834573130895e-07 -2.1957457619349058e-08 -2.2235895700054954e-10
-  hidden angularVelocity_12 5.033614648963889e-09 -2.4042026757492435e-08 2.2211899061876738e-08
-  hidden translation_16 1.9698194807714658e-05 -0.20200072327471774 0.00015456722254389633
-  hidden rotation_16 0.5074814931821915 0.6092865281346531 -0.6092884872629664 2.202358654650906
-  hidden linearVelocity_16 -1.1855353786340374e-07 -2.5903167932328087e-08 -4.912732839377388e-09
-  hidden angularVelocity_16 -3.032835394752302e-09 -2.573564288025927e-08 2.2208596879513995e-08
-  hidden translation_17 0.00014280998193240632 0.20199935641247968 -7.143942469965296e-05
-  hidden rotation_17 -0.5010001369523416 0.6119608014992096 -0.6119663717902969 4.070489462940621
-  hidden linearVelocity_17 -1.203920585710975e-07 -1.712595651044062e-08 4.824805580807221e-09
-  hidden angularVelocity_17 -5.587490035179051e-08 -3.6830515028309894e-08 2.21869727501857e-08
-  hidden translation_18 0.16949955733020972 -0.10199775779198235 -0.03284741449285572
-  hidden rotation_18 8.233975828485563e-05 0.002380731473372477 -0.9999971626648827 0.0017716140068386765
-  hidden position_18_0 172644.705444483
-  hidden linearVelocity_18 -7.995806439356483e-08 -1.5620566947405966e-08 -2.422281038822656e-09
-  hidden angularVelocity_18 2.1540968338150765e-09 1.230060126356519e-08 -1.1585443432080207e-05
-  hidden rotation_19 0.5573533882200228 -0.5870922706394948 -0.5870944271537781 4.158532072153477
-  hidden linearVelocity_19 6.792629389317065e-08 1.5157229017446174e-08 -2.3157760845246576e-09
-  hidden angularVelocity_19 -3.700875371978879e-08 4.1500235921922315e-09 -1.1585459450940643e-05
-  hidden translation_20 0.16949955681335332 0.1020022053233503 -0.0328482905508268
-  hidden rotation_20 -8.100910376809992e-05 -0.0023828228303992335 0.9999971577924028 6.281414496331588
-  hidden position_20_0 173264.5560969809
-  hidden linearVelocity_20 -8.117016528675118e-08 -1.1243476045096729e-08 2.3544046513354813e-09
-  hidden angularVelocity_20 2.175674229688191e-09 1.200295715894211e-08 -1.1490451575860107e-05
-  hidden rotation_21 -0.9258540906449183 -0.26720186968252974 -0.2672028511715993 1.647762524848464
-  hidden linearVelocity_21 6.550518146427946e-08 1.9282779304895426e-08 2.3667462300552187e-09
-  hidden angularVelocity_21 -2.1451863787974332e-07 -3.309480749733239e-08 -1.1490539210546764e-05
-  hidden translation_22 -0.1735003318756796 -0.10200151889885639 -0.032929205506794554
-  hidden rotation_22 5.718568545753394e-05 -0.0020613393440735628 -0.9999978738026926 6.281392689485152
-  hidden position_22_0 173424.5078129248
-  hidden linearVelocity_22 -8.935547558682282e-08 -1.7427103102093636e-08 -2.4273236714552314e-09
-  hidden angularVelocity_22 2.3133802131745393e-09 1.0292717148629362e-08 -1.0944153710659097e-05
-  hidden rotation_23 0.29797350109632076 -0.6749846092973548 -0.6749870886588113 3.720783814630437
-  hidden linearVelocity_23 5.026230020947979e-08 1.2148208329601624e-08 -2.323513026047516e-09
-  hidden angularVelocity_23 -5.506869803232649e-08 -1.8628121452958255e-09 -1.0944177624527917e-05
-  hidden translation_24 -0.17350033235119078 0.10199848659614298 -0.032930081561378735
-  hidden rotation_24 -5.7107891853388586e-05 0.002065973733670693 0.9999978642433295 0.0017897559119683098
-  hidden position_24_0 173932.4583627676
-  hidden linearVelocity_24 -9.057894063704591e-08 -1.3054425334688822e-08 2.3493487602472553e-09
-  hidden angularVelocity_24 2.3360131667805936e-09 9.982619484531786e-09 -1.0845167498435957e-05
-  hidden rotation_25 -0.6724630914322192 0.5233504459269867 0.5233523683040396 1.9575864861415362
-  hidden linearVelocity_25 4.778006880808701e-08 1.6253785441496196e-08 2.3590027861998326e-09
-  hidden angularVelocity_25 -2.3238165599327519e-07 -3.973894976099588e-08 -1.084526496231426e-05
-  translation 85.1061397990028 -4.693293609973439 0.09351893764781055
-  rotation -0.0018041960985560991 -0.001718253944607319 0.9999968962350931 -1.36384199682906
+  hidden position_0_0 44781.878670703416
+  hidden position_0_1 44767.15169209881
+  hidden position_0_2 17.6938943638677
+  hidden position_0_3 -46.139970931113766
+  hidden position_0_4 -49.035702498885314
+  hidden position_0_5 -330.7647724899443
+  hidden linearVelocity_0 -1.2118975411424372e-07 -2.0854158275420456e-08 4.773962621371692e-09
+  hidden angularVelocity_0 -1.124507133690648e-09 -2.4624718156547028e-08 2.216424758540442e-08
+  hidden translation_12 0.010987800323533747 -0.005893523519119981 0.026983733979756508
+  hidden rotation_12 0.49566769712478276 0.8602121063594741 0.11978591778507014 0.053352172289941754
+  hidden linearVelocity_12 -1.2112607120290445e-07 -2.094116291456397e-08 4.562963125863674e-09
+  hidden angularVelocity_12 -1.1245239662911646e-09 -2.4624717024196604e-08 2.2164248475246866e-08
+  hidden translation_16 1.9698180762278443e-05 -0.20200072327471774 0.00015456722433385958
+  hidden rotation_16 0.5074815279944274 0.609286513636853 -0.6092884727653153 2.2023585992853842
+  hidden linearVelocity_16 -1.1826175412540933e-07 -2.522594199704354e-08 1.9312685750582782e-09
+  hidden angularVelocity_16 -9.179419256126556e-09 -2.637147854734569e-08 2.21609120979337e-08
+  hidden translation_17 0.00014281002547468727 0.20199935641247968 -7.143933765699952e-05
+  hidden rotation_17 -0.5009999036451223 0.6119608970011874 -0.6119664672913707 4.070489089950671
+  hidden linearVelocity_17 -1.202354146545448e-07 -1.64473373876431e-08 1.1431281729748952e-08
+  hidden angularVelocity_17 -6.202882170098806e-08 -3.7453965864099435e-08 2.213932357627066e-08
+  hidden translation_18 0.16949955760701862 -0.10199775773735087 -0.03284741449285572
+  hidden rotation_18 7.711321143433395e-05 0.0022256367611181815 -0.9999975202942056 0.0018950658819032189
+  hidden position_18_0 172644.7054680762
+  hidden linearVelocity_18 -8.033871998112835e-08 -1.5395107089520405e-08 3.4566463618765965e-09
+  hidden angularVelocity_18 -3.971189065295324e-09 1.1854086282348483e-08 -1.162085346750471e-05
+  hidden rotation_19 0.5573443110969818 -0.5870965792355971 -0.5870987357657067 4.158518220720353
+  hidden linearVelocity_19 6.775319391493932e-08 1.5294884193397416e-08 6.108507969619525e-09
+  hidden angularVelocity_19 -4.415602202732504e-08 3.502819003735355e-09 -1.1620873824973711e-05
+  hidden translation_20 0.1694995570831415 0.10200220537755035 -0.0328482905508268
+  hidden rotation_20 -7.591070654666407e-05 -0.002228842530818393 0.9999975132461768 6.281292163202561
+  hidden position_20_0 173264.5561181404
+  hidden linearVelocity_20 -8.154681242927627e-08 -1.1026776449321643e-08 8.09068874717146e-09
+  hidden angularVelocity_20 -3.950457983164808e-09 1.155534998300305e-08 -1.1525623505275368e-05
+  hidden rotation_21 -0.9258593407605089 -0.2671927737138802 -0.2671937551695384 1.647756871085833
+  hidden linearVelocity_21 6.533563024616782e-08 1.9411934814689607e-08 1.0604803273549436e-08
+  hidden angularVelocity_21 -2.2130473372425578e-07 -3.364482082504236e-08 -1.1525715291029616e-05
+  hidden translation_22 -0.17350033205112153 -0.10200151886051216 -0.032929205506794554
+  hidden rotation_22 6.0996970128810716e-05 -0.0022033129329296123 -0.9999975708427942 6.281508196688308
+  hidden position_22_0 173424.50783094953
+  hidden linearVelocity_22 -8.969721843030942e-08 -1.719021415575141e-08 1.3690362273574253e-09
+  hidden angularVelocity_22 -3.818937778916545e-09 9.831003393457837e-09 -1.0975753274172697e-05
+  hidden rotation_23 0.29796687775609493 -0.6749860712185068 -0.6749885505853334 3.7207716482020614
+  hidden linearVelocity_23 5.0113557894938413e-08 1.2297004810270446e-08 3.4933525341806672e-09
+  hidden angularVelocity_23 -6.236290203415727e-08 -2.557943130318245e-09 -1.0975781101969777e-05
+  hidden translation_24 -0.17350033252423547 0.10199848663415485 -0.032930081561378735
+  hidden rotation_24 -6.0879179036098885e-05 0.0022069744739799495 0.9999975627757285 0.0016754133424140623
+  hidden position_24_0 173932.45837835976
+  hidden linearVelocity_24 -9.091661614930629e-08 -1.2826264829839816e-08 6.0030609347114205e-09
+  hidden angularVelocity_24 -3.797429795529977e-09 9.51937445288392e-09 -1.087649973816049e-05
+  hidden rotation_25 -0.6724571662916439 0.5233542525461459 0.5233561749371812 1.957594646342136
+  hidden linearVelocity_25 4.7634639953655843e-08 1.6394025823733174e-08 7.989647838110578e-09
+  hidden angularVelocity_25 -2.393150859077972e-07 -4.0337548739875016e-08 -1.0876601056138851e-05
+  translation 85.10613861218148 -4.693293777753049 0.09351893644919562
+  rotation 0.001804356760530068 0.0017181249615090865 -0.9999968961668319 1.363841752239491
   controller "delivery_controller"
   bodySlot [
     Camera {
@@ -1068,7 +1068,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -1092,7 +1092,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -1116,7 +1116,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -1140,7 +1140,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -1164,7 +1164,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 Robot {
@@ -1188,7 +1188,7 @@ Robot {
     "60"
     "g"
   ]
-  customData "green"
+  customData "red"
   window "<none>"
 }
 StraightRoadSegment {
