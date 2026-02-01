@@ -1,0 +1,17 @@
+# Context-Nav-Bot Dependencies
+# Install with: pip install -r requirements.txt
+
+# AI/LLM
+google-genai>=1.0.0
+
+# Computer Vision
+ultralytics>=8.0.0
+opencv-python>=4.8.0
+
+# Core
+numpy>=1.24.0
+pillow>=10.0.0
+
+# PyTorch (required by ultralytics)
+torch>=2.0.0
+torchvision>=0.15.0

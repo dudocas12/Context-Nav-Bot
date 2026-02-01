@@ -1,4 +1,5 @@
 import math
+import cv2
 import time
 import tkinter as tk
 from tkinter import simpledialog
@@ -406,6 +407,7 @@ class DeliveryController:
                     self.bot.set_speed(0, ang_vel)
                 else:
                     print("[NAV] Aligned - committing to intersection crossing (1000 steps)")
+                    cv2.destroyAllWindows()  # Close debug window when no longer scanning
                     self.bot.stop()
                     self.state = "COMMITTING"
                     self.commit_timer = 1000 
