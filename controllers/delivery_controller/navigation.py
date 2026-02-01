@@ -2,11 +2,15 @@ import math
 from controller import Robot
 
 class Driver:
+    '''
+    Hardware abstraction layer for the TIAGo robot in Webots.
+    Provides simplified access to motors, sensors, cameras, and navigation.
+    '''
     def __init__(self):
         self.robot = Robot()
         self.timestep = int(self.robot.getBasicTimeStep())
         
-        # --- MOTORS ---
+        # MOTORS
         self.left_motor = self.robot.getDevice('wheel_left_joint')
         self.right_motor = self.robot.getDevice('wheel_right_joint')
         self.left_motor.setPosition(float('inf'))
@@ -14,7 +18,7 @@ class Driver:
         self.left_motor.setVelocity(0.0)
         self.right_motor.setVelocity(0.0)
         
-        # --- SENSORS ---
+        # SENSORS
         self.gps = self.robot.getDevice('gps')
         self.gps.enable(self.timestep)
         
@@ -32,17 +36,17 @@ class Driver:
         self.camera_width = 416
         self.camera_height = 416
         
-        # --- LIDAR ---
+        # LIDAR
         try:
             self.lidar = self.robot.getDevice('Hokuyo URG-04LX-UG01')
             self.lidar.enable(self.timestep)
             self.lidar.enablePointCloud()
-            print("✅ Lidar Enabled")
+            print("[INIT] Lidar sensor enabled")
         except:
-            print("⚠️ WARNING: Lidar not found!")
+            print("[WARN] Lidar sensor not found")
             self.lidar = None
             
-        # --- BUMPERS (FIXED) ---
+        # BUMPERS
         self.bumpers = []
         # TIAGo Base only has one device named "bumper"
         bumper_names = ['bumper'] 
@@ -52,10 +56,10 @@ class Driver:
             if device:
                 device.enable(self.timestep)
                 self.bumpers.append(device)
-                print(f"✅ Bumper '{name}' Enabled")
+                print(f"[INIT] Bumper sensor '{name}' enabled")
         
         if not self.bumpers:
-            print("⚠️ WARNING: No bumpers found!")
+            print("[WARN] No bumper sensors detected")
 
     def get_pose(self):
         """ Returns (x, y, heading_degrees) """
@@ -69,6 +73,10 @@ class Driver:
         return wx, wy, deg
 
     def get_lidar_scan(self):
+        '''
+        Returns a cleaned list of lidar distance readings.
+        Infinite values are capped at 5.0 meters for safe processing.
+        '''
         if self.lidar is None: return [5.0] * 100
         raw_scan = self.lidar.getRangeImage()
         clean_scan = [min(dist, 5.0) if not math.isinf(dist) else 5.0 for dist in raw_scan]
@@ -82,16 +90,23 @@ class Driver:
         return False
 
     def set_speed(self, linear, angular):
+        '''
+        Sets the robot's movement speed using differential drive.
+        Linear: forward/backward speed (-10 to 10).
+        Angular: rotation speed (-5 to 5), positive = left turn.
+        '''
         linear = max(min(linear, 10), -10)
         angular = max(min(angular, 5), -5)
         self.left_motor.setVelocity(linear - angular)
         self.right_motor.setVelocity(linear + angular)
 
     def stop(self):
+        '''Immediately stops all wheel motors.'''
         self.left_motor.setVelocity(0)
         self.right_motor.setVelocity(0)
         
     def step(self):
+        '''Advances the simulation by one timestep. Returns -1 if simulation ended.'''
         return self.robot.step(self.timestep)
         
     def get_ground_image(self):

@@ -4,9 +4,7 @@ from ultralytics import YOLO
 
 class RobotVision:
     def __init__(self):
-        # ==============================================================================
-        # ⚙️ CONFIGURATION
-        # ==============================================================================
+        # CONFIGURATION
         
         # 1. Road Detection
         self.ABSOLUTE_DARK_THRESHOLD = 25 
@@ -21,17 +19,17 @@ class RobotVision:
         self.YELLOW_UPPER = np.array([40, 255, 255])
 
         # 4. Traffic Lights (YOLO + Colors) - FIXED MISSING ATTRIBUTES
-        print("🧠 LOADING YOLO MODEL (yolo26n.pt)...")
+        print("[INIT] Loading YOLO model (yolo26n.pt)...")
         try:
             self.model = YOLO('yolo26n.pt') 
-            print("✅ YOLO Model Loaded")
+            print("[INIT] YOLO model loaded successfully")
         except Exception as e:
-            print(f"❌ YOLO Failed: {e}")
+            print(f"[ERROR] Failed to load YOLO model: {e}")
             self.model = None
 
         self.TRAFFIC_LIGHT_CLASS_ID = 9
         
-        # --- FIXED: ADDED COLOR THRESHOLDS BACK ---
+        # Color thresholds for traffic light detection
         self.GREEN_LOWER = np.array([35, 40, 40])
         self.GREEN_UPPER = np.array([95, 255, 255])
         
@@ -40,10 +38,12 @@ class RobotVision:
         self.RED_LOWER2 = np.array([160, 50, 50])
         self.RED_UPPER2 = np.array([180, 255, 255])
 
-    # ==============================================================================
-    # 🛠️ HELPERS & MODULES
-    # ==============================================================================
     def _process_image(self, img_data, width, height):
+        '''
+        Converts raw camera byte data into a numpy array and crops to bottom 50%.
+        Used for ground-level analysis where only the immediate area matters.
+        Returns the cropped image or None if processing fails.
+        '''
         if img_data is None: return None
         try:
             img = np.frombuffer(img_data, np.uint8).reshape((height, width, 4))
@@ -55,6 +55,11 @@ class RobotVision:
             return None
 
     def check_ground_safety(self, img_data, width, height):
+        '''
+        Analyzes the ground camera image to detect unsafe terrain (roads, dark surfaces).
+        Returns True if the ground is safe to traverse (grass or non-road surface).
+        Returns False if a road or dangerous surface is detected ahead.
+        '''
         crop = self._process_image(img_data, width, height)
         if crop is None: return True
 
@@ -79,6 +84,11 @@ class RobotVision:
         return np.count_nonzero(final_road_mask) <= self.SAFE_PIXEL_COUNT
 
     def detect_crosswalk(self, img_data, width, height):
+        '''
+        Detects yellow crosswalk markings in the ground camera image.
+        Analyzes the bottom 40% of the image for yellow pixels using HSV thresholds.
+        Returns True if more than 5% of pixels match crosswalk color.
+        '''
         if img_data is None: return False
         try:
             img = np.frombuffer(img_data, np.uint8).reshape((height, width, 4))
@@ -92,6 +102,12 @@ class RobotVision:
             return False
 
     def scan_for_traffic_lights(self, img_data, width, height):
+        '''
+        Uses YOLO object detection to find traffic lights in the front camera image.
+        Applies geometry filters to reject false positives (e.g., fire hydrants).
+        Analyzes the detected light's color using HSV thresholds.
+        Returns a dict with: found (bool), color (red/green/unknown), center_x, box_width.
+        '''
         # Default return
         result = {'found': False, 'color': 'none', 'center_x': 0.5, 'box_width': 0}
         

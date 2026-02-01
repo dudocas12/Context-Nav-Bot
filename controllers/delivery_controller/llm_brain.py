@@ -1,64 +1,67 @@
 from google import genai
 import json
 
-# ==============================================================================
-# 🔐 IMPORT SECRET KEY
-# ==============================================================================
+# API KEY IMPORT
 try:
     from my_secrets import GEMINI_API_KEY
 except ImportError:
     GEMINI_API_KEY = None
 
+# Define the known locations and their coordinates
 ZONES = {
     "residential": {
         "coords": (85.2, -5.14), 
-        "desc": "Home base, my house, sleeping, delivery drop-off, safety." # approved
+        "desc": "Home base, my house, sleeping, delivery drop-off, safety."
     },
     "park": {
         "coords": (0.0, 0.0), 
-        "desc": "Nature, walking, running, trees, grass, relaxing, outside." # approved
+        "desc": "Nature, walking, running, trees, grass, relaxing, outside."
     },
     "shopping_mall": {
-        "coords": (1.3, 55.8), # approved
+        "coords": (1.3, 55.8), 
         "desc": "Shopping mall, shops, buying food, restaurants, shopping, supplies."
     },
     "hospital": {
         "coords": (-88, 4.98), 
-        "desc": "Hospital, medical care, emergency, doctors, nurses, supplies."}, # approved
+        "desc": "Hospital, medical care, emergency, doctors, nurses, supplies."},
     "restaurant": {
         "coords": (87.2, -59.8), 
-        "desc": "Restaurant, food, eating, lunch, dinner, supplies." # approved
+        "desc": "Restaurant, food, eating, lunch, dinner, supplies."
     },
     "gas_station": {
-        "coords": (84.6, -72.4), # approved
+        "coords": (84.6, -72.4), 
         "desc": "Gas station, fuel, car, supplies."
     },
     "office": {
-        "coords": (-72.9, 68.9), # approved
+        "coords": (-72.9, 68.9), 
         "desc": "Office, work, workplace"
     },
     "museum": {
-        "coords": (82.3, 90.5), # approved
+        "coords": (82.3, 90.5), 
         "desc": "Museum, art, culture, history, exhibitions"
     },
     "church": {
-        "coords": (-91.5, -80.6), # approved
+        "coords": (-91.5, -80.6), 
         "desc": "Church, religion, worship, prayer, community"
     },
 }     
 
 def decide_destination(user_text):
-    """ Returns a dictionary: {'place_name': (x, y)} """
+    '''
+    Uses Gemini AI to interpret a natural language request and determine
+    the best destination from the predefined ZONES map.
+    Returns a dictionary: {'place_name': (x, y)} with the resolved coordinates.
+    Falls back to residential (0, 0) if parsing fails or no API key is set.
+    '''
     default_response = {"residential": (0.0, 0.0)}
     
     if not user_text:
         return default_response
     if not GEMINI_API_KEY:
-        print("⚠️ No API Key found.")
+        print("[WARN] Gemini API key not configured - using default destination")
         return default_response
 
     try:
-        # ✅ NEW SDK SYNTAX
         client = genai.Client(api_key=GEMINI_API_KEY)
         
         locations_str = ""
@@ -82,9 +85,8 @@ def decide_destination(user_text):
         4. If unsure, return home: {{"residential": [0.0, 0.0]}}
         """
         
-        print(f"☁️ Sending '{user_text}' to Gemini...")
+        print(f"[LLM] Processing navigation request: '{user_text}'")
         
-        # ✅ NEW GENERATION CALL
         response = client.models.generate_content(
             model='gemini-2.5-flash', 
             contents=prompt
@@ -102,9 +104,9 @@ def decide_destination(user_text):
         
         final_coords = (float(coords_list[0]), float(coords_list[1]))
         
-        print(f"🧠 AI DECISION: {place_name} at {final_coords}")
+        print(f"[LLM] Destination resolved: {place_name} at coordinates {final_coords}")
         return {place_name: final_coords}
 
     except Exception as e:
-        print(f"❌ AI/JSON Error: {e}")
+        print(f"[ERROR] LLM response parsing failed: {e}")
         return default_response
